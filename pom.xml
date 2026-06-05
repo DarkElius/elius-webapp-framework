@@ -51,41 +51,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>11</release>
-				</configuration>
-			</plugin>
-
-			<!-- Package all dependecies -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.4.2</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<mergeManifestMode>skip</mergeManifestMode>
-				</configuration>
-
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Release -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<configuration>
-					<checkModificationExcludes>
-						<checkModificationExclude>pom.xml</checkModificationExclude>
-						<checkModificationExclude>**</checkModificationExclude>
-					</checkModificationExcludes>
+					<release>21</release>
 				</configuration>
 			</plugin>
 
@@ -125,10 +91,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<jersey.version>3.1.1</jersey.version>
+		<jersey.version>4.0.2</jersey.version>
 		<jaxb.version>4.0.2</jaxb.version>
-		<log4j.version>2.18.0</log4j.version>
-		<unboundid.version>6.0.6</unboundid.version>
+		<log4j.version>2.26.0</log4j.version>
+		<unboundid.version>7.0.4</unboundid.version>
 	</properties>
 
 	<dependencies>
