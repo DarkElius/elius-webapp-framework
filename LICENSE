@@ -204,10 +204,10 @@
 
    THIRD-PARTY LIBRARIES
 
-   This product bundles Apache Log4j 2 for Java version 2.18.0, which is available under a "Apache 2.0" license.
+   This product bundles Apache Log4j 2 for Java version 2.26.0, which is available under a "Apache 2.0" license.
    For details, see https://github.com/apache/logging-log4j2/blob/2.x/LICENSE.txt
  
-   This product bundles UnboundID LDAP SDK for Java version 6.0.6, which is available under a "Apache 2.0" license.
+   This product bundles UnboundID LDAP SDK for Java version 7.0.4s, which is available under a "Apache 2.0" license.
    For details, see https://github.com/pingidentity/ldapsdk/blob/master/LICENSE.md
  
    This product bundles Jersey version 3.1.1, which is available under a "Apache 2.0" license.
