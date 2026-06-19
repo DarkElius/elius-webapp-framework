@@ -178,16 +178,18 @@ public class DBManager {
 
 			// Close result set
 			rs.close();
-			
+
 		} catch (SQLException e) {
-			// Log SQL State
-			logger.error("SQL State: " + e.getSQLState());
+			// Log SQL error
+			logger.warn("SQLState={}, ErrorCode={}", e.getSQLState(), e.getErrorCode());
 			
-			// Log error message
-			logger.error(e.getMessage());
+			// Log Error
+			logger.catching(e);
+
 		} catch (Exception e) {
-			// Log the error
-			logger.error(e);
+			// Log Error
+			logger.catching(e);
+
 		} finally {	
 			// Close database connection
 			close();
@@ -225,18 +227,18 @@ public class DBManager {
 			statement.execute(sql);
 
 		} catch (SQLException e) {
-			// Log SQL State
-			logger.error("SQL State: " + e.getSQLState());
+			// Log SQL error
+			logger.warn("SQLState={}, ErrorCode={}", e.getSQLState(), e.getErrorCode());
 			
-			// Log error message
-			logger.error(e.getMessage());
+			// Log Error
+			logger.catching(e);
 			
 			// Set return code
 			rc = 1;
 			
 		} catch (Exception e) {
 			// Log the error
-			logger.error(e);
+			logger.catching(e);
 
 			// Set return code
 			rc = 1;
@@ -288,17 +290,17 @@ public class DBManager {
 				return 1;
 			}			
 		} catch (SQLException e) {
-			// Log SQL State
-			logger.error("SQL State: " + e.getSQLState());
+			// Log SQL error
+			logger.warn("SQLState={}, ErrorCode={}", e.getSQLState(), e.getErrorCode());
 			
-			// Log error message
-			logger.error(e.getMessage());
+			// Log Error
+			logger.catching(e);
 			
 			// Set return code
 			rc = 1;
 		} catch (Exception e) {
 			// Log the error
-			logger.error(e);
+			logger.catching(e);
 
 			// Set return code
 			rc = 1;
@@ -407,10 +409,8 @@ public class DBManager {
 			Class.forName(driver);
 			connection = DriverManager.getConnection(connUrl, credentials.getUserId(), credentials.getPassword());
 		} catch (Exception e) {
-			// Log error message
-			logger.error("Error connecting to database");
-			// Log trace
-			logger.error(e);
+			// Log error
+			logger.catching(e);
 			// Set error
 			connection = null;
 			// Set return code
@@ -449,10 +449,8 @@ public class DBManager {
 			logger.trace("Connected to database " + connection.getMetaData().getURL());
 
 		} catch (Exception e) {
-			// Log error message
-			logger.error("Error connecting to database");
-			// Log trace
-			logger.error(e);
+			// Log error
+			logger.catching(e);
 			// Set error
 			connection = null;
 			// Set return code
@@ -481,11 +479,8 @@ public class DBManager {
 			logger.trace("Database connection closed");
 			
 		} catch (SQLException e) {
-			// Log the error
-			logger.error("Error closing database connection");
-			
-			// Log the trace
-			logger.error(e);
+			// Log error
+			logger.catching(e);
 			
 			// Set error code
 			rc = 1;

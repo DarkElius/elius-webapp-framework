@@ -63,7 +63,7 @@ public class PluginManager {
     public void loadPlugins(String directoryPath) throws Exception {
 
         // Log entry parameters
-        logger.traceEntry("path: {}", directoryPath);
+        logger.traceEntry("directoryPath={}", directoryPath);
 
         File directory = new File(directoryPath);
 
@@ -80,7 +80,7 @@ public class PluginManager {
         }
 
         // Log exit
-        logger.traceExit("number of loaded plugins: {}", plugins.size());
+        logger.traceExit("Number of loaded plugins={}", plugins.size());
     }
 
     /**
@@ -92,7 +92,7 @@ public class PluginManager {
     public void loadPlugin(File jarFile) throws Exception {
 
         // Log entry parameters
-        logger.traceEntry("jar: {}", jarFile);
+        logger.traceEntry("jarFile={}", jarFile);
 
         URLClassLoader classLoader =
                 new URLClassLoader(
@@ -126,7 +126,7 @@ public class PluginManager {
         }
 
         // Log exit
-        logger.traceExit("success");
+        logger.traceExit();
     }
 
     /**
@@ -141,7 +141,7 @@ public class PluginManager {
     public void unloadPlugin(String pluginName) {
 
         // Log entry parameters
-        logger.traceEntry("plugin name: {}", pluginName);        
+        logger.traceEntry("pluginName={}", pluginName);        
 
         PluginHandle handle =
                 plugins.remove(pluginName);
@@ -176,7 +176,7 @@ public class PluginManager {
         System.gc();
 
         // Log exit
-        logger.traceExit("success");        
+        logger.traceExit();        
     }
 
     /**
@@ -194,7 +194,7 @@ public class PluginManager {
         }
 
         // Log exit
-        logger.traceExit("success");        
+        logger.traceExit();        
     }
 
     /**
@@ -206,7 +206,7 @@ public class PluginManager {
     public Plugin findPlugin(String pluginName) {
 
         // Log entry parameters
-        logger.traceEntry("plugin name: {}", pluginName);     
+        logger.traceEntry("pluginName={}", pluginName);     
 
         PluginHandle handle =
                 plugins.get(pluginName);
@@ -216,7 +216,7 @@ public class PluginManager {
         }
 
         // Log exit
-        logger.traceExit("handle: {}", handle);     
+        logger.traceExit("handle={}", handle);     
 
         return handle.getPlugin();
     }

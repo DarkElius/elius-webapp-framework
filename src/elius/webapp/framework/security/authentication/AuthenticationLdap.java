@@ -163,9 +163,7 @@ public class AuthenticationLdap {
 			logger.trace("Connected");		
 		} catch (Exception e) {
 			// Log error
-			logger.error("Error initializing connection");
-			// Log error message
-			logger.error(e.getMessage());
+			logger.catching(e);
 			// Set error code
 			return 1;
 		}
@@ -215,10 +213,8 @@ public class AuthenticationLdap {
 			// Log logged in
 			logger.info("UserId(" + credentials.getUserId() + ") authenticated");
 		} catch (LDAPException e) {
-			// Log error
-			logger.error("Error during ldap authentication of userId(" + credentials.getUserId() + ")");
 			// Log error message
-			logger.error(e.getMessage());
+			logger.catching(e);
 			// Set generic response message for security reasons
 			response = "Invalid Credentials";
 		}
@@ -284,10 +280,8 @@ public class AuthenticationLdap {
 		            }
 		            
 				} catch (LDAPException e) {
-					// Log error
-					logger.error("Error searching in group for userId(" + userId + ")");
 					// Log error message
-					logger.error(e.getMessage());
+					logger.catching(e);
 	            	// User has not the role
 	            	found = false;
 				}
@@ -328,10 +322,8 @@ public class AuthenticationLdap {
 			// Get attribute for selected user
 			sre = connection.getEntry(attUserId + "=" + userId + "," + baseDn, attribute);
 		} catch (LDAPException e) {
-			// Log error
-			logger.error("Error searching attribute for userId(" + userId + ")");
 			// Log error message
-			logger.error(e.getMessage());
+			logger.catching(e);
 			//Return error
 			return null;
 		}
