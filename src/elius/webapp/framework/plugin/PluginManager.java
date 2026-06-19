@@ -166,7 +166,7 @@ public class PluginManager {
                     "Failed to unload plugin: "
                     + pluginName);
 
-            logger.error(e.getStackTrace());
+            logger.catching(e);
         }
 
         /*
