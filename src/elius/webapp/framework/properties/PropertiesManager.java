@@ -39,24 +39,36 @@ public class PropertiesManager {
 	private static Logger logger = LogManager.getLogger(PropertiesManager.class);
 	
 	// Properties file
-	private final Properties properties = new Properties();;
+	private final Properties properties = new Properties();
+
+	// Application path
+	private final String applicationPath;
 	
 	// Properties filename
 	private final String filename;
-	
 
 	/**
 	 * Constructor
 	 * @param filename Properties filename
 	 */
 	public PropertiesManager(String filename) {
+		// Set application file from properties
+		applicationPath = System.getProperty(ApplicationAttributes.APP_PATH);
+
 		// Set properties filename
 		this.filename = filename;
-		
+
 		// Load properties from selected file
 		load();
 	}
 
+	/**
+	 * Get application path
+	 * @return Application path
+	 */
+	public String getApplicationPath() {
+		return applicationPath;
+	}
 	
 	/**
 	 * Get the properties load status
@@ -84,24 +96,27 @@ public class PropertiesManager {
 	private int load() {
 		
 		// Log file name
-		logger.trace("Open property file(" + System.getProperty(ApplicationAttributes.APP_PATH) + "/" + filename + ")");
-		
+		logger.traceEntry("Path({}), filename({})", applicationPath, filename );
+
 		// Read property file from system property
-        try (InputStream input = new FileInputStream(System.getProperty(ApplicationAttributes.APP_PATH) + "/" + filename)) {
+        try (InputStream input = new FileInputStream(applicationPath + "/" + filename)) {
 
             // Load a properties file
             properties.load(input);
 
         } catch (IOException e) {  	
         	// Log trace
-        	logger.error(e.getMessage());
+        	logger.error(e.getStackTrace());
+			
+			// Log error
+			logger.traceExit("Error");
         	
         	// Return error
         	return 1;
         }	
 		
 		// Log successful
-		logger.debug("Property file successfully loaded");		
+		logger.traceExit();
 		
 		// Return successful
 		return 0;
@@ -121,8 +136,8 @@ public class PropertiesManager {
     		// Get property value
         	value = properties.getProperty(key);
     
-        	// Resolve environment variables
-        	value = resolveEnvironmentVariables(value);
+        	// Resolve variables
+        	value = resolveVariables(value);
         	
 			// Log key request
 			logger.trace("Key(" + key + ") value(" + value + ")");        	
@@ -217,47 +232,54 @@ public class PropertiesManager {
 	
 	
 	/**
-	 * Check and resolve for environment variables inside properties values with format ${var}
-	 * @param value Property value
-	 * @return The value with resolved environment variables if present
+	 * Resolves placeholders within the provided string by replacing them with 
+	 * their corresponding Environment Variables or JVM System Properties.
+	 * <p>
+	 * This method supports two types of placeholders:
+	 * <ul>
+	 *   <li>{@code ${VAR_NAME}} - Replaced by the Environment Variable (via {@link System#getenv(String)}).</li>
+	 *   <li>{@code #{PROP_NAME}} - Replaced by the JVM System Property (via {@link System#getProperty(String)}).</li>
+	 * </ul>
+	 * If a variable or property is not defined, it is replaced with an empty string.
+	 *
+	 * @param value the string containing placeholders to resolve; may be {@code null}
+	 * @return the resolved string, or {@code null} if the input value was {@code null}
+	 * @since 1.0
 	 */
-   	private String resolveEnvironmentVariables(String value) {
-		// Check for null value
-	    if (null == value)
-	        return null;
-	    
-	    // Create pattern for environment variable matching ${env-var} 
-	    Pattern pattern = Pattern.compile("\\$\\{(\\w+)\\}");
-	    
-	    // Set matcher engine for selected value
-	    Matcher matcher = pattern.matcher(value);
-	    
-	    // Result buffer
-	    StringBuffer result = new StringBuffer();
-	    
-	    // Environment name
-	    String envName = "";
-	    
-	    // Environment value
-	    String envValue = "";
-	    
-	    // Search for a match
-	    while(matcher.find()){
-	    	
-	    	// Get environment variable name
-	    	envName = matcher.group(1);
-	    	
-	    	// Get environment variable value
-	    	envValue = System.getenv(envName);
+	private String resolveVariables(String value) {
+		// Check for null input to avoid NullPointerException
+		if (value == null) {
+			return null;
+		}
 
-	    	// Replace with blank if null
-	        matcher.appendReplacement(result, null == envValue ? "" : envValue);
-	    }
-	    
-	    // Append the last characters
-	    matcher.appendTail(result);
-	    
-	    // Return the replaced value
-	    return result.toString();
+		// Regex using named capturing groups:
+		// "prefix" captures either '$' or '#'
+		// "name" captures the alphanumeric variable name inside the curly braces
+		Pattern pattern = Pattern.compile("(?<prefix>[\\$#])\\{(?<name>[\\w.]+)\\}");
+		Matcher matcher = pattern.matcher(value);
+		StringBuilder result = new StringBuilder();
+
+		// Loop through all matches found in the input string
+		while (matcher.find()) {
+			String prefix = matcher.group("prefix");
+			String varName = matcher.group("name");
+
+			// Java 21 Switch Expression to determine the resolution strategy
+			String resolvedValue = switch (prefix) {
+				case "$" -> System.getenv(varName);    // Fetch from OS Environment Variables
+				case "#" -> System.getProperty(varName); // Fetch from JVM System Properties (-Dkey=value)
+				default  -> null; 
+			};
+
+			// If the variable is not found (null), replace it with an empty string.
+			// Matcher.quoteReplacement prevents errors if the value contains special regex characters like '$' or '\'
+			String replacement = (resolvedValue == null) ? "" : Matcher.quoteReplacement(resolvedValue);
+			matcher.appendReplacement(result, replacement);
+		}
+
+		// Append any remaining text after the last match
+		matcher.appendTail(result);
+		
+		return result.toString();
 	}
 }
