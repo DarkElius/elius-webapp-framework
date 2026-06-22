@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import org.apache.logging.log4j.LogManager;
@@ -104,25 +105,33 @@ public class PluginManager {
                         Plugin.class,
                         classLoader);
 
-        for (Plugin plugin : serviceLoader) {
+        try {
+            for (Plugin plugin : serviceLoader) {
 
-            plugin.start();
+                plugin.start();
 
-            PluginHandle handle =
-                    new PluginHandle(
-                            plugin,
-                            classLoader,
-                            jarFile);
+                PluginHandle handle =
+                        new PluginHandle(
+                                plugin,
+                                classLoader,
+                                jarFile);
 
-            plugins.put(
-                    plugin.getName(),
-                    handle);
+                plugins.put(
+                        plugin.getName(),
+                        handle);
 
-            logger.info(
-                    "Loaded plugin: "
-                    + plugin.getName()
-                    + " v"
-                    + plugin.getVersion());
+                logger.info(
+                        "Loaded plugin="
+                        + plugin.getName()
+                        + ", version="
+                        + plugin.getVersion()
+                        + ", description="
+                        + plugin.getDescription());
+            }
+        } catch (ServiceConfigurationError e) {
+            // Log error
+            logger.error("Error loading plugin from JAR: " + jarFile.getAbsolutePath());
+            logger.catching(e);
         }
 
         // Log exit
@@ -157,13 +166,13 @@ public class PluginManager {
             handle.getClassLoader().close();
 
             logger.info(
-                    "Unloaded plugin: "
+                    "Unloaded plugin="
                     + pluginName);
 
         } catch (Exception e) {
 
             logger.error(
-                    "Failed to unload plugin: "
+                    "Failed to unload plugin="
                     + pluginName);
 
             logger.catching(e);
