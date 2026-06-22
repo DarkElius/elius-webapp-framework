@@ -118,10 +118,8 @@ public class HttpConnection {
 			}
 			
 		} catch (Exception e) {
-			// Log error
-			logger.error("Generic error");
 			// Log message
-			logger.error(e.getMessage());
+			logger.catching(e);
 			// Return generic error
 			return 2;
 		}
@@ -192,10 +190,8 @@ public class HttpConnection {
 			}
 			
 		} catch (Exception e) {
-			// Log error
-			logger.error("Generic error");
 			// Log message
-			logger.error(e.getMessage());
+			logger.catching(e);
 			// Return generic error
 			return 2;
 		}
