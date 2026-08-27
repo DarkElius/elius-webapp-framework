@@ -17,7 +17,7 @@
     under the License.
 */
 
-package elius.webapp.framework.engine;
+package elius.webapp.framework.server;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -35,10 +35,10 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class EngineWeb {
+public class ServerWeb {
     
     // Get logger
-	private static Logger logger = LogManager.getLogger(EngineWeb.class);
+	private static Logger logger = LogManager.getLogger(ServerWeb.class);
 
     /**
      * Start web application
@@ -46,7 +46,7 @@ public class EngineWeb {
      * @param config Engine configuration
      * @param lifecycle Application lifecycle
      */
-    public static void startWebApp(int port, EngineConfig config, ApplicationLifecycle lifecycle) {
+    public static void startWebApp(int port, ServerConfig config, ApplicationLifecycle lifecycle) {
         try {
             // Execute startup initialization before engine start
             if (lifecycle != null) {
