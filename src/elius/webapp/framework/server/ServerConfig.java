@@ -17,14 +17,14 @@
     under the License.
 */
 
-package elius.webapp.framework.engine;
+package elius.webapp.framework.server;
 
 import jakarta.servlet.Filter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EngineConfig {
+public class ServerConfig {
 
 private String staticResourcePath;
 
@@ -39,7 +39,7 @@ private String staticResourcePath;
      * @param path Path
      * @return Engine config
      */
-    public EngineConfig setStaticResources(String path) {
+    public ServerConfig setStaticResources(String path) {
         this.staticResourcePath = path;
         return this;
     }
@@ -49,7 +49,7 @@ private String staticResourcePath;
      * @param packages Packages name separated by comma
      * @return Engine config
      */
-    public EngineConfig setPackageJAXRS(String... packages) {
+    public ServerConfig setPackageJAXRS(String... packages) {
         if (packages != null && packages.length > 0) {
             this.packageJAXRS = String.join(",", packages);
         }
@@ -62,7 +62,7 @@ private String staticResourcePath;
      * @param filterClass Filter Class
      * @return Engine config
      */
-    public EngineConfig addFilter(String urlPattern, Class<? extends Filter> filterClass) {
+    public ServerConfig addFilter(String urlPattern, Class<? extends Filter> filterClass) {
         this.filters.put(urlPattern, filterClass);
         return this;
     }
