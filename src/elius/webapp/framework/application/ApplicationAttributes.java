@@ -31,7 +31,7 @@ public class ApplicationAttributes {
 	public static final String APP_USER_INFO = "EWA_USER_INFO";
 	
 	// Attribute to identify the name of the system properties that contains the application path
-	public static final String APP_PATH = "ewa.path";
+	public static final String APP_CONFIG_PATH = "ewa.config.path";
 	
 	// Application properties file
 	public static final String APP_PROPERTIES_FILE = "ewa.properties";

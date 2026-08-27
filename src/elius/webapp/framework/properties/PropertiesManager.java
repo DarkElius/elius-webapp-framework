@@ -53,7 +53,7 @@ public class PropertiesManager {
 	 */
 	public PropertiesManager(String filename) {
 		// Set application file from properties
-		applicationPath = System.getProperty(ApplicationAttributes.APP_PATH);
+		applicationPath = System.getProperty(ApplicationAttributes.APP_CONFIG_PATH);
 
 		// Set properties filename
 		this.filename = filename;
