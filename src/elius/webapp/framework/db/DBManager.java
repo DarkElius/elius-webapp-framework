@@ -20,7 +20,6 @@
 package elius.webapp.framework.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -31,8 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.Logger;
@@ -45,79 +42,25 @@ public class DBManager {
 	// Get logger
 	private static Logger logger = LogManager.getLogger(DBManager.class);
 	
+	// Data source
+	private final DataSource dataSource;
+
 	// Database connection
 	private Connection connection;
-	
-	// Connection type
-	private DBConnectionType connectionType;
-	
-	// Data source
-	private DataSource dataSource;
-	
-	// Data source name
-	private String dataSourceName;
-	
-	// Connection URL
-	private String connUrl;
-	
-	// Driver class name
-	private String driver;
-	
-	// Authentication credentials
-	private SecretCredentials credentials;
-	
+
 	// Fill flag
 	private DBDataConversionSettings dataConversionSettings;
 	
-	
 	/**
 	 * Constructor for datasource connections
-	 * @param dataSourceName Data source name
+	 * @param dataSource Data source
 	 */
-	public DBManager(String dataSourceName) {
-		// Set connection type to jdbc datasource
-		connectionType = DBConnectionType.JDBC;
-		
-		// Initialize data source
-		dataSource = null;
-		
-		// Initialize connection
-		connection = null;
-		
+	public DBManager(DataSource dataSource) {
 		// Data source name
-		this.dataSourceName = dataSourceName;
+		this.dataSource = dataSource;
 		
 		// Set data conversion setting to default
-		dataConversionSettings = DBDataConversionSettings.DEFAULT;
-		
-	}
-	
-
-	/**
-	 * Constructor do direct connections
-	 * @param connUrl Database connection url
-	 * @param driver Class name driver for database connection
-	 * @param credentials Authorization credentials
-	 */
-	public DBManager(String connUrl, String driver, SecretCredentials credentials) {
-		// Set connection type to direct
-		connectionType = DBConnectionType.DIRECT;
-		
-		// Initialize connection
-		connection = null;
-
-		// Set connection URL
-		this.connUrl = connUrl;
-		
-		// Set Driver class name
-		this.driver = driver;
-		
-		// Set authorization credentials
-		this.credentials = credentials;
-		
-		// Set data conversion setting to default
-		dataConversionSettings = DBDataConversionSettings.DEFAULT;
-		
+		dataConversionSettings = DBDataConversionSettings.DEFAULT;	
 	}
 	
 	
@@ -366,100 +309,21 @@ public class DBManager {
 	 * @return 0 Opened, 1 Error
 	 */
 	private int connect() {
-		// Return code
-		int rc = 0;
-		
-		// Database connection based on type
-		switch(connectionType) {
-			
-			case DIRECT:
-				// Log messages
-				logger.trace("Direct database connection selected");
-				// Call direct connection
-				rc = connectDirect();
-				break;
-				
-			case JDBC:
-				// Log messages
-				logger.trace("Jdbc database connection selected");
-				// Call jdbc connection
-				rc = connectJdbc();
-				break;
-				
-			default:
-				rc = 1;
-		}
-		
-		// Exit with connect return code
-		return rc;
-	}
-	
-	
-	/**
-	 * Connect directly to database
-	 * @return 0 Opened, 1 Error
-	 */
-	private int connectDirect() {
-		
-		// Set default return code
-		int rc = 0;
-		
 		try {
-			//Class.forName(driver).newInstance();
-			Class.forName(driver);
-			connection = DriverManager.getConnection(connUrl, credentials.getUserId(), credentials.getPassword());
-		} catch (Exception e) {
-			// Log error
-			logger.catching(e);
-			// Set error
-			connection = null;
-			// Set return code
-			rc = 1;
-		}
-
-		// Return code
-		return rc;
+            if (dataSource == null) {
+                logger.error("DataSource not initialized!");
+                return 1;
+            }
+            // Get connection from pool
+            this.connection = dataSource.getConnection();
+            return 0;
+        } catch (Exception e) {
+            logger.catching(e);
+            this.connection = null;
+            return 1;
+        }
 	}
-	
-	
-	
-	/**
-	 * Connect to database via jdbc
-	 * @return 0 Opened, 1 Error
-	 */
-	private int connectJdbc() {
-		
-		// Set default return code
-		int rc = 0;
-		
-		try {
-			// Initialize context
-			InitialContext ic = new InitialContext();
 
-			// Get application context
-			Context xmlContext = (Context) ic.lookup("java:/comp/env");
-
-			// Get data source
-			dataSource = (DataSource) xmlContext.lookup(dataSourceName);				
-
-			// Create connection
-			connection = dataSource.getConnection();
-
-			// Log the connection
-			logger.trace("Connected to database " + connection.getMetaData().getURL());
-
-		} catch (Exception e) {
-			// Log error
-			logger.catching(e);
-			// Set error
-			connection = null;
-			// Set return code
-			rc = 1;
-		}
-
-		// Return code
-		return rc;
-	}
 	
 	
 	/**
@@ -468,26 +332,19 @@ public class DBManager {
 	 */
 	private int close() {
 		
-		// Set default return code
-		int rc = 0;
-		
-		try {
-			// Close connection
-			connection.close();
-			
-			// Log close connection
-			logger.trace("Database connection closed");
-			
-		} catch (SQLException e) {
-			// Log error
-			logger.catching(e);
-			
-			// Set error code
-			rc = 1;
-		} 
-		
-		// Return code
-		return rc;
+        if (connection != null) {
+            try {
+				// Connection back to the pool
+                connection.close();
+                logger.trace("Connection back to the pool");
+            } catch (SQLException e) {
+                logger.catching(e);
+                return 1;
+            } finally {
+                connection = null;
+            }
+        }
+        return 0;
 	}
 
 	
