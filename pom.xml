@@ -94,10 +94,23 @@
 		<jersey.version>4.0.2</jersey.version>
 		<jaxb.version>4.0.2</jaxb.version>
 		<log4j.version>2.26.0</log4j.version>
+		<slf4j.version>2.0.17</slf4j.version>
 		<unboundid.version>7.0.4</unboundid.version>
 	</properties>
 
 	<dependencies>
+
+		<!-- Jetty & Web Engine -->
+		<dependency>
+			<groupId>org.eclipse.jetty.ee10</groupId>
+			<artifactId>jetty-ee10-servlet</artifactId>
+			<version>12.0.10</version> 
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>12.0.10</version>
+		</dependency>
 
 		<!-- Must be on top to prevent "MessageBodyWriter not found for media..."  -->
 		<dependency>
@@ -129,10 +142,12 @@
 			<artifactId>log4j-api</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
+
+		<!-- SLF4J API -->
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j.version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<!-- LDAP -->
