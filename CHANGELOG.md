@@ -4,6 +4,7 @@
 
 - Embedded engine implemented based on Jetty
 - Rename of ewa.path to ewa.config.path
+- New database pool management based on HikariCP
 
 
 ## [0.0.1]
