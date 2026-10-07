@@ -205,17 +205,23 @@
    THIRD-PARTY LIBRARIES
    This product bundles or uses components from the following third-party projects:
 
-   - Apache Log4j 2 for Java (Apache License 2.0)
+   - Apache Log4j 2 (Apache License 2.0)
    https://github.com/apache/logging-log4j2
 
-   - UnboundID LDAP SDK for Java (Apache License 2.0)
-   https://github.com/pingidentity/ldapsdk
+   - Eclipse Jetty (Apache License 2.0 / EPL 2.0)
+   https://github.com/jetty/jetty.project
+
+   - HikariCP (Apache License 2.0)
+   https://github.com/brettwooldridge/HikariCP
+
+   - Jakarta XML Binding / JAXB Runtime (BSD 3-Clause License)
+   https://github.com/eclipse-ee4j/jaxb-ri
 
    - Jersey (Apache License 2.0 / EPL 2.0)
    https://github.com/eclipse-ee4j/jersey
 
-   - JAXB / Jakarta XML Binding (BSD 3-Clause License)
-   https://github.com/eclipse-ee4j/jaxb-ri
+   - SLF4J API (MIT License)
+   https://www.slf4j.org/
 
-   - Eclipse Jetty (Apache License 2.0 / EPL 2.0)
-   https://github.com/jetty/jetty.project
+   - UnboundID LDAP SDK for Java (Apache License 2.0)
+   https://github.com/pingidentity/ldapsdk   
