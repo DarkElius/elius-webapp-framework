@@ -32,23 +32,12 @@
 
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-
 		<plugins>
 			
 			<!-- Compiler -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.15.0</version>
 				<configuration>
 					<release>21</release>
 				</configuration>
@@ -58,7 +47,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -73,7 +62,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.12.0</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -93,7 +82,7 @@
 				<configuration>
 					<thirdPartyFilename>NOTICE</thirdPartyFilename>
 					<excludedScopes>test,provided</excludedScopes>
-					<fileTemplate>${project.basedir}/src/main/license/third-party-template.ftl</fileTemplate>
+					<fileTemplate>${project.basedir}/src/main/resources/license/third-party-template.ftl</fileTemplate>
 					<outputDirectory>${project.basedir}</outputDirectory>		
 				</configuration>
 
@@ -107,7 +96,6 @@
 				</executions>				
 			</plugin>	
  
-
 		</plugins>
 	</build>
 
