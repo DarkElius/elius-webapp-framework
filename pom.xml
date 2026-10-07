@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>EliusWebAppFramework</groupId>
 	<artifactId>EliusWebAppFramework</artifactId>
@@ -33,7 +33,7 @@
 
 	<build>
 		<plugins>
-			
+
 			<!-- Compiler -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -82,20 +82,21 @@
 				<configuration>
 					<thirdPartyFilename>NOTICE</thirdPartyFilename>
 					<excludedScopes>test,provided</excludedScopes>
-					<fileTemplate>${project.basedir}/src/main/resources/license/third-party-template.ftl</fileTemplate>
-					<outputDirectory>${project.basedir}</outputDirectory>		
+					<fileTemplate>
+						${project.basedir}/src/main/resources/license/third-party-template.ftl</fileTemplate>
+					<outputDirectory>${project.basedir}</outputDirectory>
 				</configuration>
 
 				<executions>
 					<execution>
-					<id>generate-notice</id>
-					<goals>
-						<goal>add-third-party</goal>
-					</goals>
+						<id>generate-notice</id>
+						<goals>
+							<goal>add-third-party</goal>
+						</goals>
 					</execution>
-				</executions>				
-			</plugin>	
- 
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
@@ -116,7 +117,7 @@
 		<dependency>
 			<groupId>org.eclipse.jetty.ee10</groupId>
 			<artifactId>jetty-ee10-servlet</artifactId>
-			<version>12.0.10</version> 
+			<version>12.0.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
