@@ -5,8 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>EliusWebAppFramework</groupId>
 	<artifactId>EliusWebAppFramework</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<description>Elius WebApp Framework</description>
+	<version>0.0.2</version>
 
 	<licenses>
 		<license>
@@ -84,6 +83,30 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- NOTICE -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>2.4.0</version>
+
+				<configuration>
+					<thirdPartyFilename>NOTICE</thirdPartyFilename>
+					<excludedScopes>test,provided</excludedScopes>
+					<fileTemplate>${project.basedir}/src/main/license/third-party-template.ftl</fileTemplate>
+					<outputDirectory>${project.basedir}</outputDirectory>		
+				</configuration>
+
+				<executions>
+					<execution>
+					<id>generate-notice</id>
+					<goals>
+						<goal>add-third-party</goal>
+					</goals>
+					</execution>
+				</executions>				
+			</plugin>	
+ 
 
 		</plugins>
 	</build>
