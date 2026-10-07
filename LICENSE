@@ -203,19 +203,19 @@
    
 
    THIRD-PARTY LIBRARIES
+   This product bundles or uses components from the following third-party projects:
 
-   This product bundles Apache Log4j 2 for Java version 2.26.0, which is available under a "Apache 2.0" license.
-   For details, see https://github.com/apache/logging-log4j2/blob/2.x/LICENSE.txt
- 
-   This product bundles UnboundID LDAP SDK for Java version 7.0.4s, which is available under a "Apache 2.0" license.
-   For details, see https://github.com/pingidentity/ldapsdk/blob/master/LICENSE.md
- 
-   This product bundles Jersey version 3.1.1, which is available under a "Apache 2.0" license.
-   For details, see https://github.com/eclipse-ee4j/jersey/blob/master/LICENSE.md
+   - Apache Log4j 2 for Java (Apache License 2.0)
+   https://github.com/apache/logging-log4j2
 
-   This product bundles JAXB version 4.0.2, which is available under a "CDDL 1.1 and GPL 2.0" license.
-   For details, see https://github.com/javaee/jaxb-v2/blob/master/LICENSE
+   - UnboundID LDAP SDK for Java (Apache License 2.0)
+   https://github.com/pingidentity/ldapsdk
 
-   This product bundles Eclipse Jetty version 12.0.10, which is available under a "Apache 2.0" license.
-   For details, see https://github.com/jetty/jetty.project/blob/jetty-12.0.x/LICENSE
-                    
+   - Jersey (Apache License 2.0 / EPL 2.0)
+   https://github.com/eclipse-ee4j/jersey
+
+   - JAXB / Jakarta XML Binding (BSD 3-Clause License)
+   https://github.com/eclipse-ee4j/jaxb-ri
+
+   - Eclipse Jetty (Apache License 2.0 / EPL 2.0)
+   https://github.com/jetty/jetty.project
