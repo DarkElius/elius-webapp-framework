@@ -19,7 +19,16 @@ Road Map
 -----
 These are more or less the steps I want to implement in the near future
 
+ * Configuration Injection
+
+ * SQL Management outside sourcecode
+
+ * DB Pagination
+
+ * DB Metadata
+
  * Implement a better user profile management
+
  
 
 ### License
