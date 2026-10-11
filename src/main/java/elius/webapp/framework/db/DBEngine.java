@@ -9,14 +9,14 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 /**
- * DBEngine.
+ * DbEngine.
  * <p>
  * Class that managage the database connections.
  */
-public class DBEngine {
+public class DbEngine {
 
     // Get logger
-	private static Logger logger = LogManager.getLogger(DBEngine.class);
+	private static Logger logger = LogManager.getLogger(DbEngine.class);
 
     // Data source
     private HikariDataSource dataSource;
@@ -24,7 +24,7 @@ public class DBEngine {
     /**
 	 * Default constructor
 	 */
-	public DBEngine() {
+	public DbEngine() {
 	}
 
     // Metodo per inizializzare il pool partendo dai dati dell'applicazione

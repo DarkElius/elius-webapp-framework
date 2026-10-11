@@ -15,11 +15,11 @@
 package elius.webapp.framework.db;
 
 /**
- * DBDataConversionSettings.
+ * DbDataConversionSettings.
  * <p>
  * Settings for the data conversion class.
  */
-public enum DBDataConversionSettings {
+public enum DbDataConversionSettings {
 
 	/** Unknown */
 	UNKNOWN(0, "Unknown"), 
@@ -45,7 +45,7 @@ public enum DBDataConversionSettings {
 	 * @param id Fill flag id
 	 * @param name Fill flag name
 	 */
-	DBDataConversionSettings(int id, String name) {
+	DbDataConversionSettings(int id, String name) {
 		this.name = name;
 		this.id = id;
 	}
@@ -74,8 +74,8 @@ public enum DBDataConversionSettings {
 	 * @param id Fill flag id
 	 * @return Fill flag
 	 */
-	public static DBDataConversionSettings getById(int id) {
-	    for(DBDataConversionSettings e : values()) {
+	public static DbDataConversionSettings getById(int id) {
+	    for(DbDataConversionSettings e : values()) {
 	        if(e.id == id) return e;
 	    }
 	    return UNKNOWN;

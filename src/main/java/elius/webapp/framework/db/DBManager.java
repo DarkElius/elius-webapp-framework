@@ -32,14 +32,14 @@ import org.apache.logging.log4j.LogManager;
 
 
 /**
- * DBManager
+ * DbManager
  * <p>
  * Class that provide standards method to execute SQL code.
  */
-public class DBManager {
+public class DbManager {
 
 	// Get logger
-	private static Logger logger = LogManager.getLogger(DBManager.class);
+	private static Logger logger = LogManager.getLogger(DbManager.class);
 	
 	// Data source
 	private final DataSource dataSource;
@@ -48,18 +48,18 @@ public class DBManager {
 	private Connection connection;
 
 	// Fill flag
-	private DBDataConversionSettings dataConversionSettings;
+	private DbDataConversionSettings dataConversionSettings;
 	
 	/**
 	 * Constructor for datasource connections
 	 * @param dataSource Data source
 	 */
-	public DBManager(DataSource dataSource) {
+	public DbManager(DataSource dataSource) {
 		// Data source name
 		this.dataSource = dataSource;
 		
 		// Set data conversion setting to default
-		dataConversionSettings = DBDataConversionSettings.DEFAULT;	
+		dataConversionSettings = DbDataConversionSettings.DEFAULT;	
 	}
 	
 	
@@ -265,20 +265,20 @@ public class DBManager {
  	 * @param parms Parameters
  	 * @throws SQLException
  	 */
-	private static final void fillPreparedStatement(final PreparedStatement pStmt, DBDataConversionSettings fillFlag, final Object... parms)
+	private static final void fillPreparedStatement(final PreparedStatement pStmt, DbDataConversionSettings fillFlag, final Object... parms)
 			throws SQLException {
 		
 
 		// Convert data if specified
-		if(DBDataConversionSettings.EMPTY_STRING_TO_NULL == fillFlag) {
+		if(DbDataConversionSettings.EMPTY_STRING_TO_NULL == fillFlag) {
 		
 			// Convert empty strings to null
-			DBDataConversion.convertEmptyStrings(null, parms);
+			DbDataConversion.convertEmptyStrings(null, parms);
  
-		} else if(DBDataConversionSettings.EMPTY_STRING_TO_SPACE == fillFlag) {
+		} else if(DbDataConversionSettings.EMPTY_STRING_TO_SPACE == fillFlag) {
 			
 			// Convert empty strings to space
-			DBDataConversion.convertEmptyStrings(" ", parms);		
+			DbDataConversion.convertEmptyStrings(" ", parms);		
 			
 		}
 		
@@ -362,7 +362,7 @@ public class DBManager {
 	 * Get data conversion settings
 	 * @return Data conversion settings
 	 */
-	public DBDataConversionSettings getDataConversionSettings() {
+	public DbDataConversionSettings getDataConversionSettings() {
 		return dataConversionSettings;
 	}
 
@@ -372,7 +372,7 @@ public class DBManager {
 	 * Set data conversion settings
 	 * @param dataConversionSettings Data conversion settings
 	 */
-	public void setDataConversionSettings(DBDataConversionSettings dataConversionSettings) {
+	public void setDataConversionSettings(DbDataConversionSettings dataConversionSettings) {
 		this.dataConversionSettings = dataConversionSettings;
 	}
 

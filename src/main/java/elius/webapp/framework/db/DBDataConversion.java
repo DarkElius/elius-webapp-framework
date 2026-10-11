@@ -17,16 +17,16 @@ package elius.webapp.framework.db;
 
 
 /**
- * DBDataConversion.
+ * DbDataConversion.
  * <p>
  * Class that provide data conversion utilities.
  */
-public class DBDataConversion {
+public class DbDataConversion {
 	
 	/**
 	 * Default constructor
 	 */
-	public DBDataConversion() {
+	public DbDataConversion() {
 	}
 
 	/**

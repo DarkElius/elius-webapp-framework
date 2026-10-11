@@ -3,12 +3,12 @@ package elius.webapp.framework.db;
 /**
  * Utility class for database-related operations.
  */
-public final class DBUtils {
+public final class DbUtils {
 
     private static final String TRUNCATED_MARKER = "... [TRUNCATED]";
 
     // Private constructor to prevent instantiation
-    private DBUtils() {
+    private DbUtils() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
