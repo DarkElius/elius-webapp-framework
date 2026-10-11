@@ -18,6 +18,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+
+/**
+ * SecurityRedirectFilter.
+ * <p>
+ * Security redirect filter.
+ */
 public class SecurityRedirectFilter implements Filter {
 
 	// Get logger

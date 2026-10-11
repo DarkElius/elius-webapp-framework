@@ -27,7 +27,11 @@ import org.apache.logging.log4j.Logger;
 import elius.webapp.framework.application.ApplicationAttributes;
 
 
-
+/**
+ * PropertiesManager.
+ * <p>
+ * Manager for the properties.
+ */
 public class PropertiesManager {
 
 	// Get logger

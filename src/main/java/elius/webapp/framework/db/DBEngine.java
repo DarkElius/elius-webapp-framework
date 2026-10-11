@@ -8,11 +8,24 @@ import javax.sql.DataSource;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+/**
+ * DBEngine.
+ * <p>
+ * Class that managage the database connections.
+ */
 public class DBEngine {
+
     // Get logger
 	private static Logger logger = LogManager.getLogger(DBEngine.class);
 
+    // Data source
     private HikariDataSource dataSource;
+
+    /**
+	 * Default constructor
+	 */
+	public DBEngine() {
+	}
 
     // Metodo per inizializzare il pool partendo dai dati dell'applicazione
     /**
@@ -24,6 +37,9 @@ public class DBEngine {
      * @return Datasource pool
      */
     public DataSource createPool(String jdbcUrl, String username, String password, int maxPoolSize) {
+
+        logger.traceEntry("jdbcUrl={} username={} maxPoolSize={}", jdbcUrl, username, maxPoolSize);
+
         HikariConfig hConfig = new HikariConfig();
         hConfig.setJdbcUrl(jdbcUrl);
         hConfig.setUsername(username);
@@ -35,7 +51,7 @@ public class DBEngine {
         
         this.dataSource = new HikariDataSource(hConfig);
 
-        logger.trace("Datasource pool created");
+        logger.traceExit();
 
         return this.dataSource;
     }
@@ -44,9 +60,13 @@ public class DBEngine {
      * Close pool at shutdown
      */
     public void closePool() {
+        logger.traceEntry();
+
         if (dataSource != null && !dataSource.isClosed()) {
             dataSource.close();
             logger.trace("Datasource pool closed");
         }
+
+        logger.traceExit();
     }
 }

@@ -23,82 +23,87 @@ package elius.webapp.framework.application;
  */
 public class ApplicationAttributes {
 	
-	// Attribute to identify user info
+	/** Attribute to identify user info */
 	public static final String APP_USER_INFO = "EWA_USER_INFO";
 	
-	// Attribute to identify the name of the system properties that contains the application path
+	/** Attribute to identify the name of the system properties that contains the application path */
 	public static final String APP_CONFIG_PATH = "ewa.config.path";
 	
-	// Application properties file
+	/** Application properties file */
 	public static final String APP_PROPERTIES_FILE = "ewa.properties";
 	
 	
 	
-	// Default - Enable authentication
+	/** Default - Enable authentication */
 	public static final String DEFAULT_SECURITY_AUTHENTICATION_ENABLE = "y";
 	
-	// Default - User role for unauthenticated user
+	/** Default - User role for unauthenticated user */
 	public static final String DEFAULT_SECURITY_UNAUTHENTICATED_ROLE = "USER";
 	
-	// Default - Security repository type
+	/** Default - Security repository type */
 	public static final String DEFAULT_SECURITY_REPOSITORY_TYPE = "KeyStore";
 
-	// Default - Redirect mask, regular expression
+	/** Default - Redirect mask, regular expression */
 	public static final String DEFAULT_SECURITY_REDIRECT_MASK = ".";
 	
-	// Default - Redirect page
+	/** Default - Redirect page */
 	public static final String DEFAULT_SECURITY_REDIRECT_PAGE = "/login.html";	
 
-	// Default - LDAP port
+	/** Default - LDAP port */
 	public static final int DEFAULT_LDAP_PORT = 636;
 		
 
-	// Properties - Enable authentication
+	/** Properties - Enable authentication */
 	public static final String PROP_SECURITY_AUTHENTICATION_ENABLE = "security.authentication.enable";
 	
-	// Properties - User role for unauthenticated user
+	/** Properties - User role for unauthenticated user */
 	public static final String PROP_SECURITY_UNAUTHENTICATED_ROLE = "security.unauthenticated.role";	
 		
-	// Properties - Redirect mask, regular expression
+	/** Properties - Redirect mask, regular expression */
 	public static final String PROP_SECURITY_REDIRECT_MASK = "security.redirect.mask";
 	
-	// Properties - Redirect page
+	/** Properties - Redirect page */
 	public static final String PROP_SECURITY_REDIRECT_PAGE = "security.redirect.page";	
 	
-	// Properties - LDAP server
+	/** Properties - LDAP server */
 	public static final String PROP_LDAP_SERVER = "ldap.server";
 	
-	// Properties - LDAP port
+	/** Properties - LDAP port */
 	public static final String PROP_LDAP_PORT = "ldap.port";
 
-	// Properties - LDAP enable LDAPs (secure) (y/n), default is y
+	/** Properties - LDAP enable LDAPs (secure) (y/n), default is y */
 	public static final String PROP_LDAP_SECURE = "ldap.secure";
 	
-	// Properties - LDAP trust all certificates (y/n), default is n
+	/** Properties - LDAP trust all certificates (y/n), default is n */
 	public static final String PROP_LDAP_TRUST_ALL_CERTIFICATES = "ldap.trustAllCertificates";
 
-	// Properties - LDAP base distinguished name
+	/** Properties - LDAP base distinguished name */
 	public static final String PROP_LDAP_BASEDN = "ldap.baseDn";
 	
-	// Properties - LDAP group - base distinguished name
+	/** Properties - LDAP group - base distinguished name */
 	public static final String PROP_LDAP_GROUP_BASEDN = "ldap.group.baseDn";
 	
-	// Properties - LDAP group search for guests (? is the userId), blank for authorize it
+	/** Properties - LDAP group search for guests (? is the userId), blank for authorize it */
 	public static final String PROP_LDAP_GROUP_SEARCH_GUESTS = "ldap.group.search.guests";
 	
-	// Properties - LDAP group search for users (? is the userId), blank for authorize it
+	/** Properties - LDAP group search for users (? is the userId), blank for authorize it */
 	public static final String PROP_LDAP_GROUP_SEARCH_USERS = "ldap.group.search.users";
 	
-	// Properties - LDAP group search for power users (? is the userId), blank for authorize it
+	/** Properties - LDAP group search for power users (? is the userId), blank for authorize it */
 	public static final String PROP_LDAP_GROUP_SEARCH_POWERUSERS = "ldap.group.search.powerUsers";
 	
-	// Properties - LDAP group search for Administrators (? is the userId), blank for authorize it
+	/** Properties - LDAP group search for Administrators (? is the userId), blank for authorize it */
 	public static final String PROP_LDAP_GROUP_SEARCH_ADMINISTRATORS = "ldap.group.search.administrators";
 	
-	// Properties - LDAP userId attribute
+	/** Properties - LDAP userId attribute */
 	public static final String PROP_LDAP_USER_ID = "ldap.user.id";
 
-	// Properties - LDAP complete name attribute
+	/** Properties - LDAP complete name attribute */
 	public static final String PROP_LDAP_USER_CN = "ldap.user.cn";
-	
+
+	/**
+	 * Default constructor
+	 */
+	public ApplicationAttributes() {
+	}
 }

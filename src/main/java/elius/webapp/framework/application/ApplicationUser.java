@@ -15,10 +15,9 @@
 package elius.webapp.framework.application;
 
 /**
- * Application user information and authorization
- * 
- * @author Elia Milioni
- *
+ * ApplicationUser.
+ * <p>
+ * Application user information and authorization.
  */
 public class ApplicationUser {
 
@@ -41,7 +40,7 @@ public class ApplicationUser {
 	
 	/**
 	 * Get user id
-	 * @return
+	 * @return The user id
 	 */
 	public String getUserId() {
 		return userId;

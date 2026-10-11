@@ -30,6 +30,12 @@ import javax.sql.DataSource;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+
+/**
+ * DBManager
+ * <p>
+ * Class that provide standards method to execute SQL code.
+ */
 public class DBManager {
 
 	// Get logger

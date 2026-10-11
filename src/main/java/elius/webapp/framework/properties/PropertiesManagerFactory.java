@@ -2,12 +2,22 @@ package elius.webapp.framework.properties;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * PropertiesManagerFactory.
+ * <p>
+ * Factory class for properties manager initialization.
+ */
 public class PropertiesManagerFactory {
 	
 	// Concurrent HashMap of the properties instances
 	private static final ConcurrentHashMap<String, PropertiesManager> instances = new ConcurrentHashMap<>();
 	
+	/**
+	 * Default constructor
+	 */
+	public PropertiesManagerFactory() {
+	}
+
 	/**
 	 * Get the new or already allocated instance for the selected filename
 	 * @param filename Filename to load

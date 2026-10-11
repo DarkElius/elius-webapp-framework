@@ -35,11 +35,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
+/**
+ * AuthenticationFilter.
+ * <p>
+ * Define the filter for the basic authentication.
+ */
 public class AuthenticationFilter implements jakarta.servlet.Filter {
 
 	// Get logger
 	private static Logger logger = LogManager.getLogger(AuthenticationFilter.class);
 	
+	/**
+	 * Default constructor
+	 */
+	public AuthenticationFilter() {
+	}
+
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		

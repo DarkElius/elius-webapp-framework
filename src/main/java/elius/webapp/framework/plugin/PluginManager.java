@@ -45,11 +45,19 @@ public class PluginManager {
 	private static Logger logger = LogManager.getLogger(PluginManager.class);
 
     /**
+	 * Default constructor
+	 */
+	public PluginManager() {
+	}
+
+
+    /**
      * Loaded plugins indexed by plugin name.
      */
     private final Map<String, PluginHandle> plugins =
             new LinkedHashMap<>();
 
+            
     /**
      * Scans the specified directory and loads all JAR files found.
      *

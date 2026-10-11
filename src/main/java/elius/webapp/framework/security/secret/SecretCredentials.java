@@ -14,12 +14,23 @@
 
 package elius.webapp.framework.security.secret;
 
+/**
+ * SecretCredentials.
+ * <p>
+ * Secret credentials descriptor.
+ */
 public class SecretCredentials {
 	// User id
 	private String userId;
 	// Password
 	private String password;
 	
+	/**
+	 * Default constructor
+	 */
+	public SecretCredentials() {
+	}
+
 	
 	/**
 	 * Get user id

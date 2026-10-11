@@ -30,6 +30,12 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+
+/**
+ * HttpConnection.
+ * <p>
+ * Class for http connection management.
+ */
 public class HttpConnection {
 	
 	// Get logger
@@ -38,6 +44,11 @@ public class HttpConnection {
 	// Request response content
 	private String httpResponseContent;
 	
+	/**
+	 * Default constructor
+	 */
+	public HttpConnection() {
+	}
 	
 	/**
 	 * Trust all certificates

@@ -14,11 +14,23 @@
 
 package elius.webapp.framework.db;
 
+/**
+ * DBDataConversionSettings.
+ * <p>
+ * Settings for the data conversion class.
+ */
 public enum DBDataConversionSettings {
 
+	/** Unknown */
 	UNKNOWN(0, "Unknown"), 
+
+	/** Default */
 	DEFAULT(1, "Default"), 
+
+	/** Empty string to null */
 	EMPTY_STRING_TO_NULL(2, "Empty string to null"),
+
+	/** Empty string to space */
 	EMPTY_STRING_TO_SPACE(3, "Empty string to space");
 	
 	

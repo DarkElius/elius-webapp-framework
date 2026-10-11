@@ -30,11 +30,22 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * ServerWeb.
+ * <p>
+ * Start the web server.
+ */
 public class ServerWeb {
     
     // Get logger
 	private static Logger logger = LogManager.getLogger(ServerWeb.class);
 
+	/**
+	 * Default constructor
+	 */
+	public ServerWeb() {
+	}
+    
     /**
      * Start web application
      * @param port TCP Server Port

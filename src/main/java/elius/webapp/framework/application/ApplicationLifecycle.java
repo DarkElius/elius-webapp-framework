@@ -15,17 +15,22 @@
 
 package elius.webapp.framework.application;
 
+/**
+ * ApplicationLifecycle.
+ * <p>
+ * Define the application entrypoints for startup and graceful shutdown.
+ */
 public interface ApplicationLifecycle {
     
     /**
-     * Called before web engine start
-     * @throws Exception
+     * Called before web engine start.
+     * @throws Exception during startup.
      */
     void onStartup() throws Exception;
 
     /**
-     * Called after web engine stop / JVM shutdown
-     * @throws Exception
+     * Called after web engine stop / JVM shutdown.
+     * @throws Exception during shutdown.
      */
     void onShutdown() throws Exception;
 

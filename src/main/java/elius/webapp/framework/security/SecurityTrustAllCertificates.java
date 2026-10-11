@@ -18,16 +18,44 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.X509TrustManager;
 
-
+/**
+ * An X509TrustManager implementation that trusts all certificates without validation.
+ * 
+ * <p><b>Warning:</b> This implementation disables SSL/TLS certificate verification 
+ * and should only be used for testing or development environments.</p>
+ */
 public class SecurityTrustAllCertificates implements X509TrustManager {
 
-	public void checkClientTrusted(X509Certificate[] certs, String authType) {
-	}
+    /**
+     * Default constructor for SecurityTrustAllCertificates.
+     */
+    public SecurityTrustAllCertificates() {
+    }
 
-	public void checkServerTrusted(X509Certificate[] certs, String authType) {
-	}
+    /**
+     * {@inheritDoc}
+     * 
+     * @param certs the peer certificate chain
+     * @param authType the key exchange algorithm used
+     */
+    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+    }
 
-	public X509Certificate[] getAcceptedIssuers() {
-		return null;
-	}
+    /**
+     * {@inheritDoc}
+     * 
+     * @param certs the peer certificate chain
+     * @param authType the key exchange algorithm used
+     */
+    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @return null, as all issuers are implicitly trusted
+     */
+    public X509Certificate[] getAcceptedIssuers() {
+        return null;
+    }
 }

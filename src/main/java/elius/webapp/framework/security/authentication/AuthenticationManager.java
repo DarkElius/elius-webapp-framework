@@ -25,6 +25,12 @@ import elius.webapp.framework.properties.PropertiesManagerFactory;
 import elius.webapp.framework.security.secret.SecretCredentials;
 import jakarta.servlet.http.HttpSession;
 
+
+/**
+ * AuthenticationManager.
+ * <p>
+ * General manager for authentication process.
+ */
 public class AuthenticationManager {
 
 	// Get logger
@@ -68,6 +74,7 @@ public class AuthenticationManager {
 	/**
 	 * Execute login procedure
 	 * @param credentials Credentials
+	 * @param httpSession Http session
 	 * @return Application user or null in case of errors
 	 */
 	public ApplicationUser login(SecretCredentials credentials, HttpSession httpSession) {
@@ -165,7 +172,7 @@ public class AuthenticationManager {
 	
 	/**
 	 * Return true if the userId is logged
-	 * @param httpSession
+	 * @param httpSession Http session
 	 * @return true if userId is logged
 	 */
 	public static boolean isUserIdLogged(HttpSession httpSession) {

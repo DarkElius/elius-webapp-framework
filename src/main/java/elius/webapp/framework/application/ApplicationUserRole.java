@@ -16,22 +16,25 @@
 package elius.webapp.framework.application;
 
 /**
- * Definition of all possible user authorization roles
- * 
- * @author Elia Milioni
- *
+ * ApplicationUserRole.
+ * <p>
+ * Definition of all possible user authorization roles.
  */
 public enum ApplicationUserRole {
 
-	// Unauthorized
+	/** Unauthorized user */
 	UNAUTHORIZED(0, "Unauthorized"),
-	// Guest
+
+	/** Guest */
 	GUEST(1, "Guest"), 
-	// USer
+
+	/** User */
 	USER(2, "User"), 
-	// PowerUser
+
+	/** Power user */
 	POWERUSER(3, "PowerUser"),
-	// Administrator
+
+	/** Administrator */
 	ADMINISTRATOR(4, "Administrator");
 
 	// User role name

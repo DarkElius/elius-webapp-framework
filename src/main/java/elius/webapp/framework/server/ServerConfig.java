@@ -19,6 +19,12 @@ import jakarta.servlet.Filter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * ServerConfig.
+ * <p>
+ * Web server configuration.
+ */
 public class ServerConfig {
 
 private String staticResourcePath;
@@ -28,6 +34,11 @@ private String staticResourcePath;
     // Filter Map
     private final Map<String, Class<? extends Filter>> filters = new HashMap<>();
 
+    /**
+	 * Default constructor
+	 */
+	public ServerConfig() {
+	}
 
     /**
      * Set static resources

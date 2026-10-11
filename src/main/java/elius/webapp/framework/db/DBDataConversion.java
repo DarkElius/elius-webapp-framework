@@ -16,11 +16,22 @@
 package elius.webapp.framework.db;
 
 
+/**
+ * DBDataConversion.
+ * <p>
+ * Class that provide data conversion utilities.
+ */
 public class DBDataConversion {
 	
-	
+	/**
+	 * Default constructor
+	 */
+	public DBDataConversion() {
+	}
+
 	/**
 	 * Convert all empty strings objects to specified value
+	 * @param destinationValue Destination value
 	 * @param list Object list
 	 */
 	public static void convertEmptyStrings(String destinationValue, final Object... list) {

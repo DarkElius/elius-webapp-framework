@@ -37,10 +37,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
- * API to manage user authentication
- * 
- * @author Elia Milioni
- *
+ * AuthenticationInterface.
+ * <p>
+ * API to manage user authentication.
  */
 @Path("/auth")
 public class AuthenticationInterface extends Application {
@@ -48,6 +47,18 @@ public class AuthenticationInterface extends Application {
 	// Get logger
 	private static Logger logger = LogManager.getLogger(AuthenticationInterface.class);
 	
+	/**
+	 * Default constructor
+	 */
+	public AuthenticationInterface() {
+	}
+
+	/**
+	 * User authentication
+	 * @param credentials User credentials
+	 * @param httpRequest Http Request
+	 * @return Response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(SecretCredentials credentials, @Context HttpServletRequest httpRequest) {
@@ -82,7 +93,11 @@ public class AuthenticationInterface extends Application {
 		return Response.ok().build();
 	}
 
-	
+	/**
+	 * Get info of the current logged user
+	 * @param httpRequest Http request
+	 * @return Response
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@Context HttpServletRequest httpRequest) {
@@ -112,7 +127,11 @@ public class AuthenticationInterface extends Application {
 	}	
 	
 
-	
+	/**
+	 * Logout user
+	 * @param httpRequest Http request
+	 * @return Response
+	 */
 	@GET
 	@Path("logout")
 	public Response logout(@Context HttpServletRequest httpRequest) {

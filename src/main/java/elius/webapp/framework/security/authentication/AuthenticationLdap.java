@@ -36,6 +36,11 @@ import elius.webapp.framework.properties.PropertiesManagerFactory;
 import elius.webapp.framework.security.SecurityTrustAllCertificates;
 import elius.webapp.framework.security.secret.SecretCredentials;
 
+/**
+ * AuthenticationLdap.
+ * <p>
+ * Class for the ldap authentication.
+ */
 public class AuthenticationLdap {
 	
 	// Get logger
@@ -339,7 +344,7 @@ public class AuthenticationLdap {
 	
 	/**
 	 * Get the user role by searching in groups
-	 * @param userId
+	 * @param userId User id
 	 * @return Application user role from unauthorized to administrator
 	 */
 	public ApplicationUserRole getRole(String userId) {
