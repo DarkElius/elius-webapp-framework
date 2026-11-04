@@ -193,8 +193,8 @@
         <profile>
             <id>sonar</id>
             <properties>
-				<sonar.projectKey>elius-webapp-template</sonar.projectKey>
-				<sonar.projectName>elius-webapp-template</sonar.projectName>
+				<sonar.projectKey>elius-webapp-framework</sonar.projectKey>
+				<sonar.projectName>elius-webapp-framework</sonar.projectName>
                 
 				<sonar.host.url>${env.SONAR_HOST_URL}</sonar.host.url>
 				<sonar.host.token>${env.SONAR_TOKEN}</sonar.host.token>
