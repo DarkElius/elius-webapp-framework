@@ -8,7 +8,7 @@ package elius.webapp.framework.exceptions;
  * properly (e.g., due to invalid JAR URLs, configuration issues, or failures 
  * during the plugin's start phase).</p>
  * 
- * @see Plugin
+ * @see elius.webapp.framework.plugin.Plugin
  */
 public class PluginException extends Exception {
 

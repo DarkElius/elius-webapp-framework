@@ -23,11 +23,11 @@ import java.io.Serializable;
  */
 public class ApplicationUser implements Serializable {
 
-	// User id
+	/* User id */
 	private String userId;
-	// Complete name
+	/* Complete name */
 	private String completeName;
-	// Role
+	/* Role */
 	private ApplicationUserRole role;
 	
 	
