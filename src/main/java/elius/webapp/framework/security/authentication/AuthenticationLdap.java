@@ -17,7 +17,6 @@ package elius.webapp.framework.security.authentication;
 import java.util.List;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +32,6 @@ import elius.webapp.framework.application.ApplicationAttributes;
 import elius.webapp.framework.application.ApplicationUserRole;
 import elius.webapp.framework.properties.PropertiesManager;
 import elius.webapp.framework.properties.PropertiesManagerFactory;
-import elius.webapp.framework.security.SecurityTrustAllCertificates;
 import elius.webapp.framework.security.secret.SecretCredentials;
 
 /**
@@ -55,8 +53,6 @@ public class AuthenticationLdap {
 	private int port;
 	// Use secure connection (LDAPs)
 	private boolean useSecure;
-	// Trust all server certificates
-	private boolean trustAllCertificates;
 	// Connection
 	private LDAPConnection connection;
 	// Base distinguished name
@@ -96,13 +92,7 @@ public class AuthenticationLdap {
 		// Enable LDAPs (secure) (y/n)
 		if(!"Y".equalsIgnoreCase(appProperties.get(ApplicationAttributes.PROP_LDAP_SECURE)))
 			useSecure = false;
-
-		// Trust all server certificates, set default to false
-		trustAllCertificates = false;
-		// Trust all certificates (y/n)
-		if("Y".equalsIgnoreCase(appProperties.get(ApplicationAttributes.PROP_LDAP_TRUST_ALL_CERTIFICATES)))
-			trustAllCertificates = true;
-		
+	
 		// Base distinguished name
 		baseDn = appProperties.get(ApplicationAttributes.PROP_LDAP_BASEDN);
 		// Group base distinguished name
@@ -128,8 +118,8 @@ public class AuthenticationLdap {
 	 * @return 0 Successful, 1 Error
 	 */
 	public int connect() {
-		// Log connection
-		logger.trace("Connect to server(" + server + ") port(" + port + ") ldaps(" + useSecure + ") trustAllCertificates(" + trustAllCertificates + ")");
+
+		logger.traceEntry("Connect to server={} port={}", server, port);
 		
 		// LDAP connection
 		connection = null;
@@ -143,15 +133,7 @@ public class AuthenticationLdap {
 				// Get context for TLS 1.2
 				sslContext = SSLContext.getInstance("TLSv1.2");
 				// Initialize context
-				sslContext.init(null, null, null);
-				
-				// Trust all certificates
-				if(trustAllCertificates) {
-					// Create Trust Manager
-					TrustManager[] trustAll = new TrustManager[] {new SecurityTrustAllCertificates()};
-					// Set trust manager in the context
-					sslContext.init(null, trustAll, new java.security.SecureRandom());
-				}
+				sslContext.init(null, null, null);				
 				// Start connection / authentication
 				connection = new LDAPConnection(sslContext.getSocketFactory(), server, port);
 			} else {
@@ -196,31 +178,28 @@ public class AuthenticationLdap {
 	 */
 	public String authenticate(SecretCredentials credentials) {
 		// Log authentication
-		logger.trace("Authenticate userId(" + credentials.getUserId() + ") on baseDn(" + baseDn + ")");
-		
-		// Response message
-		String response = "";
-		
-		// Check for connection
-		if(null == connection) {
-			// Set error message
-			response = "Connection not initialized";
+		logger.traceEntry("Authenticate userId={} on baseDn=", credentials.getUserId(), baseDn);
+
+		// Check connection status
+		if (connection == null) {
+			logger.error("LDAP Connection not initialized");
+			return "Connection not initialized";
 		}
 		
 		try {
 			// Authentication
 			connection.bind(attUserId + "=" + credentials.getUserId() + "," + baseDn, credentials.getPassword()); 
 			// Log logged in
-			logger.info("UserId(" + credentials.getUserId() + ") authenticated");
+			logger.info("UserId={} authenticated", credentials.getUserId());
+
+			return "";
+
 		} catch (LDAPException e) {
 			// Log error message
 			logger.catching(e);
 			// Set generic response message for security reasons
-			response = "Invalid Credentials";
+			return "Invalid Credentials";
 		}
-		
-		// Return response message
-		return response;
 	}
 	
 	
@@ -234,10 +213,10 @@ public class AuthenticationLdap {
 	public boolean searchGroup(String groupBaseDn, String groupSearch, String userId) {
 		
 		// Set user in search string
-		groupSearch = groupSearch.replaceAll("\\?", userId);
+		groupSearch = groupSearch.replace("?", userId);
 		
 		// Log request
-		logger.trace("Check GroupBaseDn(" + groupBaseDn + ") GroupSearch(" + groupSearch + ")");
+		logger.traceEntry("Check GroupBaseDn={} GroupSearch={}", groupBaseDn, groupSearch);
 		
 		// Set default to false
 		boolean found = false;
@@ -251,7 +230,7 @@ public class AuthenticationLdap {
 				// User has the role
 				found = true;
 				// Log information about the role
-				logger.trace("Search filter is empty and userId(" + userId + ") has the role");
+				logger.trace("Search filter is empty and userId={} has the role", userId);
 				
 			} else {
 				
@@ -273,10 +252,10 @@ public class AuthenticationLdap {
 		            	// User has  the role
 		            	found = true;
 						// Log value
-						logger.trace("UserId(" + userId + ") found in group");
+						logger.trace("UserId {} found in group", userId);
 		            } else {
 						// Log value
-						logger.trace("UserId(" + userId + ") not found in group");		            	
+						logger.trace("UserId {} not found in group", userId);
 		            }
 		            
 				} catch (LDAPException e) {
@@ -289,12 +268,8 @@ public class AuthenticationLdap {
 			}
 			
 		} else {
-			
-			// User has not the role
-			found = false;
 			// Log information about the role
-			logger.trace("Search filter is set to n/a and userId(" + userId + ") has not the role");
-			
+			logger.trace("Search filter is set to n/a and userId {} has not the role", userId);			
 		}
 
 		// Return search result
@@ -309,9 +284,7 @@ public class AuthenticationLdap {
 	 * @return The value of specific attribute if present, otherwise null
 	 */
 	public String getAttribute(String userId, String attribute) {
-		// Log request
-		logger.debug("Get attribute(" + attribute + ") for userId(" + userId + ")");
-
+		
 		// Value
 		String value = "";
 		
@@ -335,7 +308,7 @@ public class AuthenticationLdap {
 		}
 		
 		// Log value
-		logger.trace("Value(" + value + ") of attribute(" + attribute + ") for userId(" + userId + ")");
+		logger.trace("value={} attribute={} userId={}", value, attribute, userId);
 
 		// Return value for selected attribute-userId
 		return value;
@@ -348,8 +321,6 @@ public class AuthenticationLdap {
 	 * @return Application user role from unauthorized to administrator
 	 */
 	public ApplicationUserRole getRole(String userId) {
-		// Log
-		logger.debug("Get role for userId(" + userId + ")");
 		
 		// Initialize role to unauthorized
 		ApplicationUserRole appUserRole = ApplicationUserRole.UNAUTHORIZED;
@@ -379,7 +350,7 @@ public class AuthenticationLdap {
 			appUserRole = ApplicationUserRole.ADMINISTRATOR;
 		
 		// Log
-		logger.trace("UserId has the " + appUserRole.toString() + " role");
+		logger.traceExit(appUserRole);
 		
 		// Return role for the specified user
 		return appUserRole;

@@ -14,12 +14,14 @@
 
 package elius.webapp.framework.application;
 
+import java.io.Serializable;
+
 /**
  * ApplicationUser.
  * <p>
  * Application user information and authorization.
  */
-public class ApplicationUser {
+public class ApplicationUser implements Serializable {
 
 	// User id
 	private String userId;

@@ -81,4 +81,4 @@ public enum DbDataConversionSettings {
 	    return UNKNOWN;
 	}
 	
-};
+}

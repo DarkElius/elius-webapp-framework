@@ -74,9 +74,6 @@ public class ApplicationAttributes {
 	/** Properties - LDAP enable LDAPs (secure) (y/n), default is y */
 	public static final String PROP_LDAP_SECURE = "ldap.secure";
 	
-	/** Properties - LDAP trust all certificates (y/n), default is n */
-	public static final String PROP_LDAP_TRUST_ALL_CERTIFICATES = "ldap.trustAllCertificates";
-
 	/** Properties - LDAP base distinguished name */
 	public static final String PROP_LDAP_BASEDN = "ldap.baseDn";
 	
@@ -104,6 +101,7 @@ public class ApplicationAttributes {
 	/**
 	 * Default constructor
 	 */
-	public ApplicationAttributes() {
+	private ApplicationAttributes() {
+		/* This class should not be instantiated */
 	}
 }

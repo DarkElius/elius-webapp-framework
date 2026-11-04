@@ -29,6 +29,7 @@ public class SecretCredentials {
 	 * Default constructor
 	 */
 	public SecretCredentials() {
+		/* Nothing to initialize */
 	}
 
 	

@@ -12,9 +12,7 @@
  * limitations under the License.
  */
 
-
 package elius.webapp.framework.db;
-
 
 /**
  * DbDataConversion.
@@ -22,33 +20,30 @@ package elius.webapp.framework.db;
  * Class that provide data conversion utilities.
  */
 public class DbDataConversion {
-	
+
 	/**
 	 * Default constructor
 	 */
-	public DbDataConversion() {
+	private DbDataConversion() {
+		/* This class should not be instantiated */
 	}
 
 	/**
 	 * Convert all empty strings objects to specified value
+	 * 
 	 * @param destinationValue Destination value
-	 * @param list Object list
+	 * @param list             Object list
 	 */
 	public static void convertEmptyStrings(String destinationValue, final Object... list) {
-		
+
 		// Read parameters
 		for (int i = 0; i < list.length; i++) {
-		
-			// Not null objects
-			if(null != list[i]) {
-				
-				// Get empty String 
-				if(list[i].getClass().equals(String.class) && ("".equals((String)list[i])) ) 	
-					list[i] = (Object)destinationValue;
-				
+			// Get empty String
+			if (list[i] instanceof String str && str.isEmpty()) {
+ 			   list[i] = destinationValue;
 			}
 		}
-		
+
 	}
-	
+
 }

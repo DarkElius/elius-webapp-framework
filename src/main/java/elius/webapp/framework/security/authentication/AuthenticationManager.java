@@ -97,13 +97,13 @@ public class AuthenticationManager {
 			// Check if default role it's unauthorized
 			if(ApplicationUserRole.UNAUTHORIZED == appUser.getUserRole()) {
 				// Set error
-				logger.warn("User (" + appUser.getUserId() + ") not authorized");
+				logger.warn("UserId={} not authorized", appUser.getUserId());
 				// Return error
 				return null;
 			}
 			
 			// Log the unauthenticated user
-			logger.warn("User (" + appUser.getUserId() + ") Role(" + appUser.getUserRole().getName() + ") logged in without authentication (disabled)");
+			logger.warn("User={} logged in without authentication (disabled)", appUser);
 			
 			// Return successful
 			return appUser;
@@ -134,14 +134,14 @@ public class AuthenticationManager {
 		// Check if user has a role to proceed with the application usage
 		if(ApplicationUserRole.UNAUTHORIZED == appUser.getUserRole()) {
 			// Set error
-			logger.warn("UserId (" + appUser.getUserId() + ") not authorized");
+			logger.warn("UserId={} not authorized", appUser.getUserId());
 			// Close LDAP connection
 			ldapManager.close();
 			// Return error
 			return null;
 		}
-		// Set error
-		logger.debug("UserId (" + appUser.getUserId() + ") has role " + appUser.getUserRole().getName());
+
+		logger.debug("User={}", appUser);
 		
 		// Get complete name
 		String userCN = ldapManager.getAttribute(credentials.getUserId(), ldapManager.getAttCompleteName());
@@ -176,13 +176,7 @@ public class AuthenticationManager {
 	 * @return true if userId is logged
 	 */
 	public static boolean isUserIdLogged(HttpSession httpSession) {
-		
-		// UserId not logged
-		if(null == httpSession.getAttribute(ApplicationAttributes.APP_USER_INFO))
-			return false;
-		
-		// UserId is logged
-		return true;
+		return (null == httpSession.getAttribute(ApplicationAttributes.APP_USER_INFO));
 	}
 	
 }

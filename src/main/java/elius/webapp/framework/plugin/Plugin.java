@@ -14,6 +14,8 @@
 
 package elius.webapp.framework.plugin;
 
+import elius.webapp.framework.exceptions.LifecycleException;
+
 /**
  * Base contract for all plugins.
  *
@@ -54,9 +56,9 @@ public interface Plugin {
      * tasks such as allocating resources, registering listeners or
      * starting background services.</p>
      *
-     * @throws Exception if the plugin cannot be started
+     * @throws LifecycleException if the plugin cannot be started
      */
-    default void start() throws Exception {
+    default void start() throws LifecycleException {
     }
 
     /**
@@ -66,8 +68,8 @@ public interface Plugin {
      * unregister listeners, stop background services and perform
      * any required cleanup operations.</p>
      *
-     * @throws Exception if an error occurs during shutdown
+     * @throws LifecycleException if an error occurs during shutdown
      */
-    default void stop() throws Exception {
+    default void stop() throws LifecycleException {
     }
 }

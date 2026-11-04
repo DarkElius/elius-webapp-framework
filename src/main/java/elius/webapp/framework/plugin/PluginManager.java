@@ -16,19 +16,19 @@ package elius.webapp.framework.plugin;
 
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import elius.webapp.framework.exceptions.PluginException;
 
 
 /**
@@ -47,7 +47,8 @@ public class PluginManager {
     /**
 	 * Default constructor
 	 */
-	public PluginManager() {
+	private PluginManager() {
+        /* This class should not be instantiated */
 	}
 
 
@@ -62,9 +63,9 @@ public class PluginManager {
      * Scans the specified directory and loads all JAR files found.
      *
      * @param directoryPath plugin directory
-     * @throws Exception if a plugin cannot be loaded
+     * @throws PluginException if a plugin cannot be loaded
      */
-    public void loadPlugins(String directoryPath) throws Exception {
+    public void loadPlugins(String directoryPath) throws PluginException {
 
         // Log entry parameters
         logger.traceEntry("directoryPath={}", directoryPath);
@@ -84,31 +85,31 @@ public class PluginManager {
         }
 
         // Log exit
-        logger.traceExit("Number of loaded plugins={}", plugins.size());
+        logger.traceExit("Number of loaded plugins: {}", plugins.size());
     }
 
     /**
      * Loads a single plugin JAR file.
      *
      * @param jarFile plugin JAR file
-     * @throws Exception if loading fails
+     * @throws PluginException if loading fails
      */
-    public void loadPlugin(File jarFile) throws Exception {
+    public void loadPlugin(File jarFile) throws PluginException {
 
         // Log entry parameters
         logger.traceEntry("jarFile={}", jarFile);
 
-        URLClassLoader classLoader =
-                new URLClassLoader(
-                        new URL[]{jarFile.toURI().toURL()},
-                        Plugin.class.getClassLoader());
-
-        ServiceLoader<Plugin> serviceLoader =
-                ServiceLoader.load(
-                        Plugin.class,
-                        classLoader);
-
         try {
+            URLClassLoader classLoader =
+                    new URLClassLoader(
+                            new URL[]{jarFile.toURI().toURL()},
+                            Plugin.class.getClassLoader());
+
+            ServiceLoader<Plugin> serviceLoader =
+                    ServiceLoader.load(
+                            Plugin.class,
+                            classLoader);
+
             for (Plugin plugin : serviceLoader) {
 
                 plugin.start();
@@ -123,22 +124,21 @@ public class PluginManager {
                         plugin.getName(),
                         handle);
 
-                logger.info(
-                        "Loaded plugin="
-                        + plugin.getName()
-                        + ", version="
-                        + plugin.getVersion()
-                        + ", description="
-                        + plugin.getDescription());
+                logger.traceExit("Plugin loaded = {}", plugin);
             }
-        } catch (ServiceConfigurationError e) {
-            // Log error
-            logger.error("Error loading plugin from JAR: " + jarFile.getAbsolutePath());
-            logger.catching(e);
-        }
 
-        // Log exit
-        logger.traceExit();
+        } catch (MalformedURLException e) {
+            logger.error("Invalid plugin JAR URL for file: {}", jarFile.getAbsolutePath(), e);
+            throw new PluginException("Invalid plugin URL: " + jarFile.getName(), e);
+            
+        } catch (ServiceConfigurationError e) {
+            logger.error("Error loading plugin configuration from JAR: {}", jarFile.getAbsolutePath(), e);
+            throw new PluginException("Error loading plugin configuration: " + jarFile.getName(), e);
+            
+        } catch (Exception e) {
+            logger.error("Error starting plugin from JAR: {}", jarFile.getAbsolutePath(), e);
+            throw new PluginException("Failed to start plugin: " + jarFile.getName(), e);
+        }
     }
 
     /**
@@ -168,28 +168,17 @@ public class PluginManager {
 
             handle.getClassLoader().close();
 
-            logger.info(
-                    "Unloaded plugin="
-                    + pluginName);
+            logger.info("Unloaded plugin: {}", pluginName);
 
         } catch (Exception e) {
 
-            logger.error(
-                    "Failed to unload plugin="
-                    + pluginName);
+            logger.error("Failed to unload plugin: {}", pluginName);
 
             logger.catching(e);
         }
 
-        /*
-         * Suggest garbage collection in order to release
-         * class loaders and plugin classes no longer referenced.
-         */
-        System.gc();
-
-        // Log exit
-        logger.traceExit();        
     }
+
 
     /**
      * Unloads all currently loaded plugins.
@@ -209,6 +198,7 @@ public class PluginManager {
         logger.traceExit();        
     }
 
+
     /**
      * Finds a loaded plugin by name.
      *
@@ -217,9 +207,6 @@ public class PluginManager {
      */
     public Plugin findPlugin(String pluginName) {
 
-        // Log entry parameters
-        logger.traceEntry("pluginName={}", pluginName);     
-
         PluginHandle handle =
                 plugins.get(pluginName);
 
@@ -227,11 +214,9 @@ public class PluginManager {
             return null;
         }
 
-        // Log exit
-        logger.traceExit("handle={}", handle);     
-
         return handle.getPlugin();
     }
+
 
     /**
      * Returns all loaded plugins.
@@ -241,15 +226,11 @@ public class PluginManager {
      * @return loaded plugins
      */
     public Collection<Plugin> getLoadedPlugins() {
-
-        List<Plugin> result = new ArrayList<>();
-
-        for (PluginHandle handle : plugins.values()) {
-            result.add(handle.getPlugin());
-        }
-
-        return Collections.unmodifiableCollection(result);
+        return plugins.values().stream()
+                .map(PluginHandle::getPlugin)
+                .toList();
     }
+
 
     /**
      * Returns the number of loaded plugins.
@@ -260,6 +241,7 @@ public class PluginManager {
         return plugins.size();
     }
 
+    
     /**
      * Checks whether a plugin with the specified name
      * is currently loaded.

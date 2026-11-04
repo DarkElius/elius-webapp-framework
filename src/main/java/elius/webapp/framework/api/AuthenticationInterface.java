@@ -51,6 +51,7 @@ public class AuthenticationInterface extends Application {
 	 * Default constructor
 	 */
 	public AuthenticationInterface() {
+		// Intentionally empty: JAX-RS runtime instantiates this class via reflection
 	}
 
 	/**
@@ -62,8 +63,6 @@ public class AuthenticationInterface extends Application {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(SecretCredentials credentials, @Context HttpServletRequest httpRequest) {
-		// Log request received
-		logger.trace("Application Login request received");
 
 		// Create instance for user profile
 		AuthenticationManager appUserProfile = new AuthenticationManager();
@@ -74,7 +73,7 @@ public class AuthenticationInterface extends Application {
 		// Check for errors
 		if(null == appUser) {
 			// Log unauthorized used
-			logger.error("UserId(" + credentials.getUserId() + ") not authorized");
+			logger.error("UserId {} not authorized", credentials.getUserId());
 			
 			// Return error
 			return Response.status(Response.Status.UNAUTHORIZED).entity(appUserProfile.getResponse()).build();
@@ -87,11 +86,12 @@ public class AuthenticationInterface extends Application {
 		session.setAttribute(ApplicationAttributes.APP_USER_INFO, appUser);
 		
 		// Log request successfully
-		logger.trace("UserId(" + credentials.getUserId() + ") successfully authenticated with role (" + appUser.getUserRole() + ")");
+		logger.traceExit("User authenticated = {}", appUser);
 		
 		// Return authenticated
 		return Response.ok().build();
 	}
+
 
 	/**
 	 * Get info of the current logged user
@@ -101,9 +101,6 @@ public class AuthenticationInterface extends Application {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@Context HttpServletRequest httpRequest) {
-		
-		// Log request received
-		logger.trace("Session get user request received");
 		
 		// Get Session
 		HttpSession session = httpRequest.getSession();
@@ -120,7 +117,7 @@ public class AuthenticationInterface extends Application {
 		}
 	
 		// Log request successfully
-		logger.trace("Fetched userId(" + appUser.getUserId() + ") cn(" + appUser.getCompleteName() + ") role(" + appUser.getUserRole().getName() + ")");
+		logger.traceExit("User info = {}", appUser);
 		
 		// Return successful
 		return Response.ok().entity(appUser).build();
@@ -151,7 +148,7 @@ public class AuthenticationInterface extends Application {
 			logger.warn("User not found");		
 		} else {
 			// Log request successfully
-			logger.trace(appUser.getUserId() + " logged out");
+			logger.traceExit("User logged out = {}", appUser.getUserId());
 		}
 		// Invalidate session
 		session.invalidate();

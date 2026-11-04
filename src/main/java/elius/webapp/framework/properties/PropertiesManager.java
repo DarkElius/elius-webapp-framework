@@ -46,6 +46,9 @@ public class PropertiesManager {
 	// Properties filename
 	private final String filename;
 
+	// Messages
+	private static String DEFAULT_WAS_SET = "Invalid or empty properties ({}), default was set to default: {}";
+
 	/**
 	 * Constructor
 	 * @param filename Properties filename
@@ -125,16 +128,14 @@ public class PropertiesManager {
 		// Set default value for error
         String value = null;
         
-        if(null != properties) {
-    		// Get property value
-        	value = properties.getProperty(key);
-    
-        	// Resolve variables
-        	value = resolveVariables(value);
-        	
-			// Log key request
-			logger.trace("Key(" + key + ") value(" + value + ")");        	
-        } 
+	// Get property value
+		value = properties.getProperty(key);
+
+		// Resolve variables
+		value = resolveVariables(value);
+		
+		// Log key request
+		logger.traceExit(key);       	
     	
     	// Return value
     	return value;
@@ -155,7 +156,7 @@ public class PropertiesManager {
 		if ((null == value) || value.trim().isEmpty()) {
 			
 			// Log warning
-			logger.warn("Invalid or empty properties (" + key + "), default was set (" + defaultValue + ")");
+			logger.warn(DEFAULT_WAS_SET, key, defaultValue);
 			
 			// Return the default value
 			return defaultValue;
@@ -187,7 +188,7 @@ public class PropertiesManager {
 			value = defaultValue;
 			
 			// Log warning
-			logger.warn("Invalid or empty properties (" + key + "), default was set (" + defaultValue + ")");		
+			logger.warn(DEFAULT_WAS_SET, key, defaultValue);
 		}
 		
 		// Return value
@@ -216,7 +217,7 @@ public class PropertiesManager {
 			value = defaultValue;
 			
 			// Log warning
-			logger.warn("Invalid or empty properties (" + key + "), default was set (" + defaultValue + ")");		
+			logger.warn(DEFAULT_WAS_SET, key, defaultValue);
 		}
 		
 		// Return value

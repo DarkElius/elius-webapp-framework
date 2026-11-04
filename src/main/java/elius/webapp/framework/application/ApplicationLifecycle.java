@@ -15,6 +15,8 @@
 
 package elius.webapp.framework.application;
 
+import elius.webapp.framework.exceptions.LifecycleException;
+
 /**
  * ApplicationLifecycle.
  * <p>
@@ -24,14 +26,14 @@ public interface ApplicationLifecycle {
     
     /**
      * Called before web engine start.
-     * @throws Exception during startup.
+     * @throws LifecycleException during startup.
      */
-    void onStartup() throws Exception;
+    void onStartup() throws LifecycleException;
 
     /**
      * Called after web engine stop / JVM shutdown.
-     * @throws Exception during shutdown.
+     * @throws LifecycleException during shutdown.
      */
-    void onShutdown() throws Exception;
+    void onShutdown() throws LifecycleException;
 
 }

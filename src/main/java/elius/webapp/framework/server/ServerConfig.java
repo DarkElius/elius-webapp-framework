@@ -37,7 +37,8 @@ private String staticResourcePath;
     /**
 	 * Default constructor
 	 */
-	public ServerConfig() {
+	private ServerConfig() {
+        /* This class should not be instantiated */
 	}
 
     /**

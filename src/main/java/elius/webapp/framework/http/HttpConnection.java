@@ -14,15 +14,10 @@
 
 package elius.webapp.framework.http;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
-import elius.webapp.framework.security.SecurityTrustAllCertificates;
 import elius.webapp.framework.security.secret.SecretCredentials;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -47,26 +42,8 @@ public class HttpConnection {
 	/**
 	 * Default constructor
 	 */
-	public HttpConnection() {
-	}
-	
-	/**
-	 * Trust all certificates
-	 * @throws Exception
-	 */
-	private SSLContext trustAll() throws Exception {
-		// Get context instance
-		SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-		// Initialize it
-		sslContext.init(null, null, null);
-		// Trust settings
-		TrustManager[] trustAll = new TrustManager[] {new SecurityTrustAllCertificates()};
-		// Set parameters in the context
-		sslContext.init(null, trustAll, new java.security.SecureRandom());
-		// Set trust all certificates context to HttpsURLConnection
-		HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());	
-		// Return context
-		return sslContext;
+	private HttpConnection() {
+		/* This class should not be instantiated */
 	}
 	
 	
@@ -74,25 +51,14 @@ public class HttpConnection {
 	 * Execute a GET call to the specified URL
 	 * @param uri URI to be called
 	 * @param credentials Credentials or null for unauthenticated connection
-	 * @param trustAllCertificates True to trust all certificates
 	 * @return 0 Successful, 1 HTTP Error, 2 Generic Error
 	 */
-	public int get(String uri, SecretCredentials credentials, boolean trustAllCertificates) {
-		// Log get
-		logger.debug("GET URI(" + uri + ") User(" + credentials.getUserId() + ") + TrustAll(" + trustAllCertificates + ")");		
+	public int get(String uri, SecretCredentials credentials) {
 		
 		// Initialized response content
 		httpResponseContent = "";
-		
-		try {
-			Client client = null;
 			
-			// Trust all certificates
-			if(trustAllCertificates) {
-				client = ClientBuilder.newBuilder().sslContext(trustAll()).build();
-			} else {
-				client = ClientBuilder.newClient();
-			}
+		try (Client client = ClientBuilder.newClient()) {
 	
 			// Set authentication
 			if(null != credentials) {
@@ -128,11 +94,8 @@ public class HttpConnection {
 			logger.catching(e);
 			// Return generic error
 			return 2;
-		}
+		} 
 		
-		// Log get
-		logger.debug("Get successfully executed");		
-
 		// Return successful
 		return 0;
 	}
@@ -142,28 +105,17 @@ public class HttpConnection {
 	 * Execute a POST call to the specified URL
 	 * @param uri URI to be called
 	 * @param credentials Credentials or null for unauthenticated connection
-	 * @param trustAllCertificates True to trust all certificates
 	 * @param body Body
 	 * @param content Set content type
 	 * @param accept Set accept type
 	 * @return 0 Successful, 1 HTTP Error, 2 Generic Error 
 	 */
-	public int post(String uri, SecretCredentials credentials, boolean trustAllCertificates, Entity<?> body, MediaType content, MediaType accept) {
-		// Log get
-		logger.debug("POST URI(" + uri + ") User(" + credentials.getUserId() + ") + TrustAll(" + trustAllCertificates + ")");		
-		
+	public int post(String uri, SecretCredentials credentials, Entity<?> body, MediaType content, MediaType accept) {
+
 		// Initialized response content
 		httpResponseContent = "";
 		
-		try {
-			Client client = null;
-			
-			// Trust all certificates
-			if(trustAllCertificates) {
-				client = ClientBuilder.newBuilder().sslContext(trustAll()).build();
-			} else {
-				client = ClientBuilder.newClient();
-			}
+		try (Client client = ClientBuilder.newClient()) {
 	
 			// Set authentication
 			if(null != credentials) {
@@ -201,9 +153,6 @@ public class HttpConnection {
 			// Return generic error
 			return 2;
 		}
-		
-		// Log get
-		logger.debug("POST successfully executed");		
 
 		// Return successful
 		return 0;

@@ -43,7 +43,8 @@ public class ServerWeb {
 	/**
 	 * Default constructor
 	 */
-	public ServerWeb() {
+	private ServerWeb() {
+        /* This class should not be instantiated */
 	}
     
     /**
@@ -120,11 +121,15 @@ public class ServerWeb {
 
             server.start();
 
-            logger.info("Server started on port " + port);
+            logger.info("Server started on port: %d", port);
 
             server.join();
 
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.catching(e);
+            System.exit(1);
+        } catch (Exception e) { 
             logger.catching(e);
             System.exit(1);
         }

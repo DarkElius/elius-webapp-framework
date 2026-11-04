@@ -24,7 +24,8 @@ public class DbEngine {
     /**
 	 * Default constructor
 	 */
-	public DbEngine() {
+	private DbEngine() {
+        /* This class should not be instantiated */
 	}
 
     // Metodo per inizializzare il pool partendo dai dati dell'applicazione

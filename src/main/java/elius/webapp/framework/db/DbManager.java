@@ -21,6 +21,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,13 +71,10 @@ public class DbManager {
 	 * @return Object table
 	 */
 	public List<Map<String, Object>> executeQuery(String sql, Object... parms) {
-		
-		// Log SQL, do not trace SQL code for security reasons
-		logger.trace("Execute sql");
 
 		// Error during connection
 		if(0 != connect()) {
-			return null;
+			return Collections.emptyList();
 		}
 		
 		// List of rows (columns / value)
@@ -116,7 +114,7 @@ public class DbManager {
 			}
 			
 			// Log number of rows
-			logger.trace("Number of row selected is " + table.size());
+			logger.traceExit("Number of row selected is %d ", table.size());
 
 			// Close result set
 			rs.close();
@@ -149,8 +147,6 @@ public class DbManager {
 	 * @return 0 Successful, 1 Error
 	 */
 	public int execute(String sql) {
-		// Log SQL, do not trace SQL code for security reasons
-		logger.trace("Execute sql");
 		
 		// Error during connection
 		if(0 != connect()) {
@@ -161,30 +157,17 @@ public class DbManager {
 		int rc = 0;		
 		
 		// Start DROP / CREATE
-		try {
-			// Create /drop statement from connection
-			Statement statement = connection.createStatement();
+		try (Statement statement = connection.createStatement()) {
 			
 			// Create / drop table
 			statement.execute(sql);
 
 		} catch (SQLException e) {
 			// Log SQL error
-			logger.warn("SQLState={}, ErrorCode={}", e.getSQLState(), e.getErrorCode());
-			
-			// Log Error
-			logger.catching(e);
-			
-			// Set return code
+		logger.catching(e);
 			rc = 1;
 			
-		} catch (Exception e) {
-			// Log the error
-			logger.catching(e);
-
-			// Set return code
-			rc = 1;
-		} finally {	
+		} finally { 
 			// Close database connection
 			close();
 		}
@@ -221,7 +204,7 @@ public class DbManager {
 			int rows = preparedStatement.executeUpdate();
 			
 			// Log inserted rows
-			logger.trace("Number of row updated is " + rows);
+			logger.traceExit("Number of row updated is {}", rows);
 			
 			// Row not updated
 			if (rows <= 0) {

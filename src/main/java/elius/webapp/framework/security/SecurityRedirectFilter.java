@@ -64,14 +64,11 @@ public class SecurityRedirectFilter implements Filter {
 		String path = ((HttpServletRequest) servletRequest).getServletPath();
 		
 		// Log
-		logger.trace("Requested resource (" + path + ")");
+		logger.trace("Requested resource: {}", path);
 		
 		// Process HTTP request
-		if (servletRequest instanceof HttpServletRequest) {
-			// Cast request
-			HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-			// Cast response
-			HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+		if (servletRequest instanceof HttpServletRequest httpServletRequest &&
+			servletResponse instanceof HttpServletResponse httpServletResponse) {
 			
 	        // Disable caching
 			httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");

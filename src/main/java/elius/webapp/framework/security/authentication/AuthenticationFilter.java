@@ -16,7 +16,7 @@ package elius.webapp.framework.security.authentication;
 
 import java.io.IOException;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
@@ -44,111 +44,105 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
 
 	// Get logger
 	private static Logger logger = LogManager.getLogger(AuthenticationFilter.class);
+
+	// Messages
+	private static String INVALID_AUTH_HEADER = "Invalid authentication header";
+	private static String USER_NOT_AUTHORIZED = "User not authorized";
 	
 	/**
 	 * Default constructor
 	 */
-	public AuthenticationFilter() {
+	private AuthenticationFilter() {
+		/* This class should not be instantiated */
 	}
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) 
+			throws IOException, ServletException {
 		
-		// Get requested resource
-		String path = ((HttpServletRequest) servletRequest).getServletPath();
-		
-		// Log
-		logger.trace("Requested resource (" + path + ")");
-		
-		// Process HTTP request
-		if (servletRequest instanceof HttpServletRequest) {
-			// Cast
-			HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-			HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-	
-			// Get Session
-			HttpSession httpSession = httpServletRequest.getSession();
-			
-			// Valid user found in session, skip authorization
-			if(AuthenticationManager.isUserIdLogged(httpSession)) {
-				// Finish
-				filterChain.doFilter(httpServletRequest, httpServletResponse);				
-			} else {
+		// 1. Guard clause: se non è una richiesta HTTP, procedi oltre senza bloccare
+		if (!(servletRequest instanceof HttpServletRequest httpServletRequest) || 
+			!(servletResponse instanceof HttpServletResponse httpServletResponse)) {
+			filterChain.doFilter(servletRequest, servletResponse);
+			return;
+		}
 
-				// Get Authorization
-				String authHeader = httpServletRequest.getHeader("Authorization");
-				
-				// Valid
-				if (authHeader != null) {
-					
-					// Get headers
-					StringTokenizer st = new StringTokenizer(authHeader);
-					
-					// Scroll list
-					if (st.hasMoreTokens()) {
-						
-						// Get token
-						String basic = st.nextToken();
-						
-						// Basic Authorization
-						if (basic.equalsIgnoreCase("Basic")) {
-							
-							// Basic authentication
-							logger.trace("Basic authentication filter found");
-												
-							try {
-								// Convert from Base64
-								String auth = new String(Base64.getDecoder().decode(st.nextToken()));
-	
-								// Parsing
-								int p = auth.indexOf(":");
-								
-								// Correct value
-								if (p != -1) {
-									// Authentication credentials
-									SecretCredentials credentials = new SecretCredentials();
-									
-									// Extract userId
-									credentials.setUserId(auth.substring(0, p).trim());
-									
-									// Extract password
-									credentials.setPassword(auth.substring(p + 1).trim());
-									
-									// Create instance for user profile
-									AuthenticationManager appUserProfile = new AuthenticationManager();
-									
-									// Execute login
-									ApplicationUser appUser = appUserProfile.login(credentials, httpSession);
-									
-									// Check for errors
-									if(null == appUser) {
-										// Log unauthorized used
-										logger.warn("User not authorized");
-										
-										// Set response, invalid authentication header
-										unauthorized(httpServletResponse, "User not authorized");
-									} else {
-										// Finish
-										filterChain.doFilter(httpServletRequest, httpServletResponse);
-									}
-									
-								} else {
-									// Invalid authorization header
-									logger.error("Invalid authentication header");
-									
-									// Set response, invalid authentication header
-									unauthorized(httpServletResponse, "Invalid authentication header");
-								}
-	
-							} catch (UnsupportedEncodingException e) {
-								throw new Error("Couldn't retrieve authentication", e);
-							}							
-						}
-					}
-				} else {
-					unauthorized(httpServletResponse);
-				}
+		// Log requested resource path
+		logger.trace("Requested resource: {}", httpServletRequest.getServletPath());
+
+		HttpSession httpSession = httpServletRequest.getSession();
+
+		// Check if user is already logged
+		if (AuthenticationManager.isUserIdLogged(httpSession)) {
+			filterChain.doFilter(httpServletRequest, httpServletResponse);
+			return;
+		}
+
+		// Missing authorization header
+		String authHeader = httpServletRequest.getHeader("Authorization");
+		if (authHeader == null) {
+			unauthorized(httpServletResponse);
+			return;
+		}
+
+		// Process basic authentication
+		processBasicAuthentication(httpServletRequest, httpServletResponse, filterChain, authHeader, httpSession);
+	}
+
+
+	/**
+	 * Handles Basic HTTP Authentication.
+	 */
+	private void processBasicAuthentication(HttpServletRequest httpServletRequest, 
+										HttpServletResponse httpServletResponse, 
+										FilterChain filterChain, 
+										String authHeader, 
+										HttpSession httpSession) throws IOException, ServletException {
+		
+		StringTokenizer st = new StringTokenizer(authHeader);
+		
+		if (!st.hasMoreTokens() || !st.nextToken().equalsIgnoreCase("Basic")) {
+			unauthorized(httpServletResponse, INVALID_AUTH_HEADER);
+			return;
+		}
+
+		logger.trace("Basic authentication filter found");
+
+		try {
+			if (!st.hasMoreTokens()) {
+				unauthorized(httpServletResponse, INVALID_AUTH_HEADER);
+				return;
 			}
+
+			// Decode Base64 credentials
+			String auth = new String(Base64.getDecoder().decode(st.nextToken()), StandardCharsets.UTF_8);
+			int p = auth.indexOf(":");
+			
+			if (p == -1) {
+				logger.error(INVALID_AUTH_HEADER);
+				unauthorized(httpServletResponse, INVALID_AUTH_HEADER);
+				return;
+			}
+
+			// Extract credentials and login
+			SecretCredentials credentials = new SecretCredentials();
+			credentials.setUserId(auth.substring(0, p).trim());
+			credentials.setPassword(auth.substring(p + 1).trim());
+
+			AuthenticationManager appUserProfile = new AuthenticationManager();
+			ApplicationUser appUser = appUserProfile.login(credentials, httpSession);
+
+			if (appUser == null) {
+				logger.warn(USER_NOT_AUTHORIZED);
+				unauthorized(httpServletResponse, USER_NOT_AUTHORIZED);
+			} else {
+				filterChain.doFilter(httpServletRequest, httpServletResponse);
+			}
+
+		} catch (IllegalArgumentException e) {
+			// Gestisce errori di decoding Base64 o problemi simili
+			logger.error("Couldn't retrieve authentication", e);
+			unauthorized(httpServletResponse, INVALID_AUTH_HEADER);
 		}
 	}
 	

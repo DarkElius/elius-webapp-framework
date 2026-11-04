@@ -15,7 +15,8 @@ public class PropertiesManagerFactory {
 	/**
 	 * Default constructor
 	 */
-	public PropertiesManagerFactory() {
+	private PropertiesManagerFactory() {
+		/* This class should not be instantiated */
 	}
 
 	/**
@@ -24,9 +25,7 @@ public class PropertiesManagerFactory {
 	 * @return PropertiesManager instance
 	 */
 	public static synchronized PropertiesManager getInstance(String filename) {
-		
-		return instances.computeIfAbsent(filename, key -> new PropertiesManager(key));
-		
+		return instances.computeIfAbsent(filename, PropertiesManager::new);
 	}
 	
 }
