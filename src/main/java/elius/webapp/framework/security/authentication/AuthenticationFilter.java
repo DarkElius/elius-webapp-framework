@@ -52,15 +52,15 @@ public class AuthenticationFilter implements jakarta.servlet.Filter {
 	/**
 	 * Default constructor
 	 */
-	private AuthenticationFilter() {
-		/* This class should not be instantiated */
+	public AuthenticationFilter() {
+		/* Nothing to initialize */
 	}
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) 
 			throws IOException, ServletException {
 		
-		// 1. Guard clause: se non è una richiesta HTTP, procedi oltre senza bloccare
+		// Ignore not http requests
 		if (!(servletRequest instanceof HttpServletRequest httpServletRequest) || 
 			!(servletResponse instanceof HttpServletResponse httpServletResponse)) {
 			filterChain.doFilter(servletRequest, servletResponse);

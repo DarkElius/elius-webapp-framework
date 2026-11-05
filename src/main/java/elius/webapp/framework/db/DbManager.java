@@ -114,7 +114,7 @@ public class DbManager {
 			}
 			
 			// Log number of rows
-			logger.traceExit("Number of row selected is %d ", table.size());
+			logger.traceExit("Number of row selected is {} ", table.size());
 
 			// Close result set
 			rs.close();

@@ -121,7 +121,7 @@ public class ServerWeb {
 
             server.start();
 
-            logger.info("Server started on port: %d", port);
+            logger.info("Server started on port: {}", port);
 
             server.join();
 

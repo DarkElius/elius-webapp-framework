@@ -176,7 +176,7 @@ public class AuthenticationManager {
 	 * @return true if userId is logged
 	 */
 	public static boolean isUserIdLogged(HttpSession httpSession) {
-		return (null == httpSession.getAttribute(ApplicationAttributes.APP_USER_INFO));
+		return (null != httpSession.getAttribute(ApplicationAttributes.APP_USER_INFO));
 	}
 	
 }
