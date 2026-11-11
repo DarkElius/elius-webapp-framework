@@ -42,8 +42,8 @@ public class HttpConnection {
 	/**
 	 * Default constructor
 	 */
-	private HttpConnection() {
-		/* This class should not be instantiated */
+	public HttpConnection() {
+		/* Nothing to initialize */
 	}
 	
 	
