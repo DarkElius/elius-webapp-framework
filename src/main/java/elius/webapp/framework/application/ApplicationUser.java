@@ -17,17 +17,15 @@ package elius.webapp.framework.application;
 import java.io.Serializable;
 
 /**
- * ApplicationUser.
- * <p>
  * Application user information and authorization.
  */
 public class ApplicationUser implements Serializable {
 
-	/* User id */
+	/** User id */
 	private String userId;
-	/* Complete name */
+	/** Complete name */
 	private String completeName;
-	/* Role */
+	/** Role */
 	private ApplicationUserRole role;
 	
 	
