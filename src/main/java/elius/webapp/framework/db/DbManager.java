@@ -204,7 +204,7 @@ public class DbManager {
 			int rows = preparedStatement.executeUpdate();
 			
 			// Log inserted rows
-			logger.traceExit("Number of row updated is {}", rows);
+			logger.trace("Number of row updated={}", rows);
 			
 			// Row not updated
 			if (rows <= 0) {

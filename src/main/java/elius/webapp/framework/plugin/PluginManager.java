@@ -121,7 +121,7 @@ public class PluginManager {
                         plugin.getName(),
                         handle);
 
-                logger.traceExit("Plugin loaded={}", plugin);
+                logger.trace("Plugin loaded={} version={}", plugin.getName(), plugin.getVersion());
             }
 
         } catch (MalformedURLException e) {
@@ -181,8 +181,6 @@ public class PluginManager {
      * Unloads all currently loaded plugins.
      */
     public void unloadAllPlugins() {
-        // Log entry
-        logger.traceEntry();             
 
         String[] pluginNames =
                 plugins.keySet().toArray(new String[0]);
@@ -190,9 +188,7 @@ public class PluginManager {
         for (String pluginName : pluginNames) {
             unloadPlugin(pluginName);
         }
-
-        // Log exit
-        logger.traceExit();        
+ 
     }
 
 

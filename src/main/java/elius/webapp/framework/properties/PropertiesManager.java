@@ -47,7 +47,7 @@ public class PropertiesManager {
 	private final String filename;
 
 	// Messages
-	private static String DEFAULT_WAS_SET = "Invalid or empty properties ({}), default was set to default: {}";
+	private static String DEFAULT_WAS_SET = "Invalid or empty property={}, default was set: {}";
 
 	/**
 	 * Constructor
@@ -135,7 +135,7 @@ public class PropertiesManager {
 		value = resolveVariables(value);
 		
 		// Log key request
-		logger.trace("key={} value={}", key, value);       	
+		logger.debug("{}={}", key, value);       	
     	
     	// Return value
     	return value;

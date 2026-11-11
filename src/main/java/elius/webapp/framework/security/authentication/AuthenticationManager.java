@@ -103,7 +103,7 @@ public class AuthenticationManager {
 			}
 			
 			// Log the unauthenticated user
-			logger.warn("User={} logged in without authentication (disabled)", appUser);
+			logger.warn("UserId={} logged in without authentication (disabled)", appUser.getUserId());
 			
 			// Return successful
 			return appUser;
@@ -141,8 +141,6 @@ public class AuthenticationManager {
 			return null;
 		}
 
-		logger.debug("User={}", appUser);
-		
 		// Get complete name
 		String userCN = ldapManager.getAttribute(credentials.getUserId(), ldapManager.getAttCompleteName());
 		// Check result
@@ -156,6 +154,8 @@ public class AuthenticationManager {
 		
 		// Save userId in session
 		httpSession.setAttribute(ApplicationAttributes.APP_USER_INFO, appUser);
+
+		logger.info("UserId={} logged in ", appUser.getUserId());
 		
 		// Return successful
 		return appUser;
