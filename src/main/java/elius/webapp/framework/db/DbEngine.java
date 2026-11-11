@@ -39,8 +39,6 @@ public class DbEngine {
      */
     public DataSource createPool(String jdbcUrl, String username, String password, int maxPoolSize) {
 
-        logger.traceEntry("jdbcUrl={} username={} maxPoolSize={}", jdbcUrl, username, maxPoolSize);
-
         HikariConfig hConfig = new HikariConfig();
         hConfig.setJdbcUrl(jdbcUrl);
         hConfig.setUsername(username);
@@ -52,7 +50,7 @@ public class DbEngine {
         
         this.dataSource = new HikariDataSource(hConfig);
 
-        logger.traceExit();
+        logger.trace("Pool created with jdbcUrl={} username={} maxPoolSize={}", jdbcUrl, username, maxPoolSize);
 
         return this.dataSource;
     }

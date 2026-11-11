@@ -73,7 +73,7 @@ public class AuthenticationInterface extends Application {
 		// Check for errors
 		if(null == appUser) {
 			// Log unauthorized used
-			logger.error("UserId {} not authorized", credentials.getUserId());
+			logger.error("UserId={} not authorized", credentials.getUserId());
 			
 			// Return error
 			return Response.status(Response.Status.UNAUTHORIZED).entity(appUserProfile.getResponse()).build();
@@ -86,7 +86,7 @@ public class AuthenticationInterface extends Application {
 		session.setAttribute(ApplicationAttributes.APP_USER_INFO, appUser);
 		
 		// Log request successfully
-		logger.traceExit("User authenticated = {}", appUser);
+		logger.trace("UserId={} authenticated with role={}", appUser.getUserId(), appUser.getUserRole());
 		
 		// Return authenticated
 		return Response.ok().build();
@@ -115,9 +115,6 @@ public class AuthenticationInterface extends Application {
 			// Set error
 			return Response.status(Response.Status.FORBIDDEN).build();
 		}
-	
-		// Log request successfully
-		logger.traceExit("User info = {}", appUser);
 		
 		// Return successful
 		return Response.ok().entity(appUser).build();
@@ -133,9 +130,6 @@ public class AuthenticationInterface extends Application {
 	@Path("logout")
 	public Response logout(@Context HttpServletRequest httpRequest) {
 		
-		// Log request received
-		logger.trace("Logout request received");
-		
 		// Get Session
 		HttpSession session = httpRequest.getSession();
 		
@@ -148,7 +142,7 @@ public class AuthenticationInterface extends Application {
 			logger.warn("User not found");		
 		} else {
 			// Log request successfully
-			logger.traceExit("User logged out = {}", appUser.getUserId());
+			logger.trace("UserId={} logged out", appUser.getUserId());
 		}
 		// Invalidate session
 		session.invalidate();

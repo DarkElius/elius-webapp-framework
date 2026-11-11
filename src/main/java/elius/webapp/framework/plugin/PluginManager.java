@@ -67,9 +67,6 @@ public class PluginManager {
      */
     public void loadPlugins(String directoryPath) throws PluginException {
 
-        // Log entry parameters
-        logger.traceEntry("directoryPath={}", directoryPath);
-
         File directory = new File(directoryPath);
 
         File[] jarFiles =
@@ -85,7 +82,7 @@ public class PluginManager {
         }
 
         // Log exit
-        logger.traceExit("Number of loaded plugins: {}", plugins.size());
+        logger.trace("Number of loaded plugins={} on directoryPath={}", plugins.size(), directoryPath);
     }
 
     /**
@@ -149,9 +146,6 @@ public class PluginManager {
      */
     public void unloadPlugin(String pluginName) {
 
-        // Log entry parameters
-        logger.traceEntry("pluginName={}", pluginName);        
-
         PluginHandle handle =
                 plugins.remove(pluginName);
 
@@ -165,11 +159,11 @@ public class PluginManager {
 
             handle.getClassLoader().close();
 
-            logger.info("Unloaded plugin: {}", pluginName);
+            logger.info("plugin={} unloaded", pluginName);
 
         } catch (Exception e) {
 
-            logger.error("Failed to unload plugin: {}", pluginName);
+            logger.error("Failed to unload plugin={}", pluginName);
 
             logger.catching(e);
         }

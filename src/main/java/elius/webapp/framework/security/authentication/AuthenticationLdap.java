@@ -118,8 +118,6 @@ public class AuthenticationLdap {
 	 * @return 0 Successful, 1 Error
 	 */
 	public int connect() {
-
-		logger.traceEntry("Connect to server={} port={}", server, port);
 		
 		// LDAP connection
 		connection = null;
@@ -142,7 +140,7 @@ public class AuthenticationLdap {
 			}
 			
 			// Log successful
-			logger.trace("Connected");		
+			logger.trace("Connected to server={} port={}", server, port);	
 		} catch (Exception e) {
 			// Log error
 			logger.catching(e);
@@ -177,12 +175,10 @@ public class AuthenticationLdap {
 	 * @return Blank for successful or the error message
 	 */
 	public String authenticate(SecretCredentials credentials) {
-		// Log authentication
-		logger.traceEntry("Authenticate userId={} on baseDn=", credentials.getUserId(), baseDn);
 
 		// Check connection status
 		if (connection == null) {
-			logger.error("LDAP Connection not initialized");
+			logger.error("LDAP connection not initialized");
 			return "Connection not initialized";
 		}
 		
@@ -190,7 +186,7 @@ public class AuthenticationLdap {
 			// Authentication
 			connection.bind(attUserId + "=" + credentials.getUserId() + "," + baseDn, credentials.getPassword()); 
 			// Log logged in
-			logger.info("UserId={} authenticated", credentials.getUserId());
+			logger.info("UserId={} authenticated on baseDn={}", credentials.getUserId(), baseDn);
 
 			return "";
 
@@ -214,10 +210,7 @@ public class AuthenticationLdap {
 		
 		// Set user in search string
 		groupSearch = groupSearch.replace("?", userId);
-		
-		// Log request
-		logger.traceEntry("Check GroupBaseDn={} GroupSearch={}", groupBaseDn, groupSearch);
-		
+			
 		// Set default to false
 		boolean found = false;
 		
@@ -271,6 +264,9 @@ public class AuthenticationLdap {
 			// Log information about the role
 			logger.trace("Search filter is set to n/a and userId {} has not the role", userId);			
 		}
+
+		// Log request
+		logger.trace("UserId={} found GroupBaseDn={} with GroupSearch={}", userId, groupBaseDn, groupSearch);
 
 		// Return search result
 		return found;	
@@ -350,7 +346,7 @@ public class AuthenticationLdap {
 			appUserRole = ApplicationUserRole.ADMINISTRATOR;
 		
 		// Log
-		logger.traceExit(appUserRole);
+		logger.trace("User={} role={}", userId, appUserRole.getName());
 		
 		// Return role for the specified user
 		return appUserRole;

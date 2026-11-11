@@ -97,9 +97,6 @@ public class PropertiesManager {
 	 */
 	private int load() {
 		
-		// Log file name
-		logger.traceEntry("applicationPath={}, filename={}", applicationPath, filename );
-
 		// Read property file from system property
         try (InputStream input = new FileInputStream(applicationPath + "/" + filename)) {
 
@@ -108,14 +105,16 @@ public class PropertiesManager {
 
         } catch (IOException e) {  	
         	// Log trace
-        	logger.catching(e);
+        	logger.error("Error loading properties", e);
 
         	// Return error
-        	return logger.traceExit(1);
+        	return 1;
         }	
-			
+		
+		logger.debug("Properties successfully loaded from applicationPath={} filename={}", applicationPath, filename);
+
 		// Return successful
-		return logger.traceExit(0);
+		return 0;
 	}
 	
 	
