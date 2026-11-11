@@ -47,8 +47,8 @@ public class PluginManager {
     /**
 	 * Default constructor
 	 */
-	private PluginManager() {
-        /* This class should not be instantiated */
+	public PluginManager() {
+        /* Nothing to initialize */
 	}
 
 
