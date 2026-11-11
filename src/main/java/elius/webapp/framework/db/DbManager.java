@@ -318,7 +318,6 @@ public class DbManager {
             try {
 				// Connection back to the pool
                 connection.close();
-                logger.trace("Connection back to the pool");
             } catch (SQLException e) {
                 logger.catching(e);
                 return 1;
