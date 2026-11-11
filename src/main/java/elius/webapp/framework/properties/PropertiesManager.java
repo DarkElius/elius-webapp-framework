@@ -135,7 +135,7 @@ public class PropertiesManager {
 		value = resolveVariables(value);
 		
 		// Log key request
-		logger.traceExit(key);       	
+		logger.trace("key={} value={}", key, value);       	
     	
     	// Return value
     	return value;

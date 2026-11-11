@@ -96,9 +96,6 @@ public class PluginManager {
      */
     public void loadPlugin(File jarFile) throws PluginException {
 
-        // Log entry parameters
-        logger.traceEntry("jarFile={}", jarFile);
-
         try {
             URLClassLoader classLoader =
                     new URLClassLoader(
@@ -124,7 +121,7 @@ public class PluginManager {
                         plugin.getName(),
                         handle);
 
-                logger.traceExit("Plugin loaded = {}", plugin);
+                logger.traceExit("Plugin loaded={}", plugin);
             }
 
         } catch (MalformedURLException e) {

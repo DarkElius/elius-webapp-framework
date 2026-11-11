@@ -61,13 +61,11 @@ public class DbEngine {
      * Close pool at shutdown
      */
     public void closePool() {
-        logger.traceEntry();
 
         if (dataSource != null && !dataSource.isClosed()) {
             dataSource.close();
-            logger.trace("Datasource pool closed");
+            logger.info("Datasource pool closed");
         }
 
-        logger.traceExit();
     }
 }
