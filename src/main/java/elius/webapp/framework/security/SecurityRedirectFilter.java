@@ -30,13 +30,13 @@ public class SecurityRedirectFilter implements Filter {
 	private static Logger logger = LogManager.getLogger(SecurityRedirectFilter.class);
 
 	// Properties file
-	private PropertiesManager appProperties;
+	private final PropertiesManager appProperties;
 	
 	// Redirect mask, regular expression
-	private String redirectMask;
+	private final String redirectMask;
 	
 	// Redirect page
-	private String redirectPage;
+	private final String redirectPage;
 
 	
 	/**
@@ -62,10 +62,7 @@ public class SecurityRedirectFilter implements Filter {
 		
 		// Get requested resource
 		String path = ((HttpServletRequest) servletRequest).getServletPath();
-		
-		// Log
-		logger.trace("Requested resource: {}", path);
-		
+			
 		// Process HTTP request
 		if (servletRequest instanceof HttpServletRequest httpServletRequest &&
 			servletResponse instanceof HttpServletResponse httpServletResponse) {
